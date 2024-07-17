@@ -15,7 +15,7 @@ public class ICitaService implements CitaService {
 
     @Override
     public void saveCita(Cita cita) {
-
+        citaRepository.save(cita);
     }
 
     @Override
@@ -25,11 +25,11 @@ public class ICitaService implements CitaService {
 
     @Override
     public void deleteCita(Long id) {
-
+        citaRepository.deleteById(id);
     }
 
     @Override
     public List<Cita> findAllCita() {
-        return null;
+        return citaRepository.findAll();
     }
 }
