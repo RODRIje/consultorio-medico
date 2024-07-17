@@ -11,7 +11,7 @@ public interface CitaService {
     void saveCita(Cita cita);
 
     // Actualizar Cita
-    void updateCita(Long id);
+    Cita updateCita(Long id);
 
     // Cancelar/eliminar cita
     void deleteCita(Long id);
