@@ -1,6 +1,7 @@
 package com.proymedic.consultoriomedico.Service.impl;
 
 import com.proymedic.consultoriomedico.Entities.Cita;
+import com.proymedic.consultoriomedico.Persistence.impl.ICitaDAO;
 import com.proymedic.consultoriomedico.Repositories.CitaRepository;
 import com.proymedic.consultoriomedico.Service.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,11 @@ import java.util.Optional;
 @Service
 public class ICitaService implements CitaService {
     @Autowired
-    private CitaRepository citaRepository;
+    private ICitaDAO iCitaDAO;
 
     @Override
     public void saveCita(Cita cita) {
-        citaRepository.save(cita);
+        iCitaDAO.saveCita(cita);
     }
 
     @Override
@@ -26,11 +27,11 @@ public class ICitaService implements CitaService {
 
     @Override
     public void deleteCita(Long id) {
-        citaRepository.deleteById(id);
+        iCitaDAO.deleteCita(id);
     }
 
     @Override
     public List<Cita> findAllCita() {
-        return citaRepository.findAll();
+        return iCitaDAO.findAllCita();
     }
 }
