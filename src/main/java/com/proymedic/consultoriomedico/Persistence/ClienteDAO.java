@@ -18,4 +18,7 @@ public interface ClienteDAO {
 
     // Listar todos los cliente
     List<Cliente> findAllCliente();
+
+    // Listar cliente por id
+    Cliente findById(Long id);
 }

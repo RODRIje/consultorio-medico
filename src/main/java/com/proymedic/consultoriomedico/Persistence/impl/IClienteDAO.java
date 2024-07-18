@@ -31,4 +31,9 @@ public class IClienteDAO implements ClienteDAO {
     public List<Cliente> findAllCliente() {
         return clienteRepository.findAll();
     }
+
+    @Override
+    public Cliente findById(Long id) {
+        return clienteRepository.getById(id);
+    }
 }

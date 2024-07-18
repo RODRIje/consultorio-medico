@@ -47,6 +47,7 @@ public class IMedicoDAO implements MedicoDAO {
         return medicoRepository.findAll();
     }
 
+    @Override
     public Medico findById(Long id){
         return medicoRepository.getById(id);
     }

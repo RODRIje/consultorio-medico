@@ -19,4 +19,7 @@ public interface MedicoDAO {
 
     // Listar medicos
     List<Medico> findAllMedico();
+
+    // Listar medico por id
+    Medico findById(Long id);
 }

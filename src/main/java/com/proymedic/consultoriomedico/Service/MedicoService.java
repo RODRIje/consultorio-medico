@@ -20,4 +20,7 @@ public interface MedicoService {
     // Listar medicos
     List<Medico> findAllMedico();
 
+    // Buscar medico por id
+    Medico findById(Long id);
+
 }

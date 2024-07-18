@@ -19,4 +19,7 @@ public interface ClienteService {
     // Listar todos los cliente
     List<Cliente> findAllCliente();
 
+    // Buscar cliente por id
+    Cliente findById(Long id);
+
 }
