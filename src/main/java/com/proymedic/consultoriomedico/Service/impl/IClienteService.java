@@ -5,9 +5,11 @@ import com.proymedic.consultoriomedico.Persistence.impl.IClienteDAO;
 import com.proymedic.consultoriomedico.Repositories.ClienteRepository;
 import com.proymedic.consultoriomedico.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class IClienteService implements ClienteService {
     @Autowired
     private IClienteDAO iClienteDAO;

@@ -5,10 +5,12 @@ import com.proymedic.consultoriomedico.Persistence.impl.IMedicoDAO;
 import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class IMedicoService implements MedicoService {
     @Autowired
     private IMedicoDAO iMedicoDAO;

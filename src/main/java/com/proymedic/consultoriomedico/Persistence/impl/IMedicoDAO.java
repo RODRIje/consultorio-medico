@@ -4,10 +4,12 @@ import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Persistence.MedicoDAO;
 import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class IMedicoDAO implements MedicoDAO {
     @Autowired
     private MedicoRepository medicoRepository;
