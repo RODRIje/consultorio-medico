@@ -1,6 +1,7 @@
 package com.proymedic.consultoriomedico.Service.impl;
 
 import com.proymedic.consultoriomedico.Entities.Cliente;
+import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Persistence.impl.IClienteDAO;
 import com.proymedic.consultoriomedico.Repositories.ClienteRepository;
 import com.proymedic.consultoriomedico.Service.ClienteService;
@@ -19,8 +20,9 @@ public class IClienteService implements ClienteService {
         iClienteDAO.saveCliente(cliente);
     }
     @Override
-    public void updateCliente(Long id) {
-
+    public Cliente updateCliente(Long id, Cliente cliente) {
+        Cliente cliente1 = iClienteDAO.updateCliente(id, cliente);
+        return cliente1;
     }
     @Override
     public void deleteCliente(Long id) {

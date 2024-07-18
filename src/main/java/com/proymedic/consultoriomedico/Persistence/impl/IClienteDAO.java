@@ -18,8 +18,16 @@ public class IClienteDAO implements ClienteDAO {
     }
 
     @Override
-    public void updateCliente(Long id) {
+    public Cliente updateCliente(Long id, Cliente cliente) {
+        Cliente clienteUpdate = clienteRepository.findById(id).get();
 
+        clienteUpdate.setNombre(cliente.getNombre());
+        clienteUpdate.setApellido(cliente.getApellido());
+        clienteUpdate.setEmail(cliente.getEmail());
+        clienteUpdate.setObraSocial(cliente.getObraSocial());
+        clienteUpdate.setNombreObraSocial(cliente.getNombreObraSocial());
+
+        return clienteUpdate;
     }
 
     @Override
