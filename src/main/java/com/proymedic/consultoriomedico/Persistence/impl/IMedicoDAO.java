@@ -46,4 +46,8 @@ public class IMedicoDAO implements MedicoDAO {
     public List<Medico> findAllMedico() {
         return medicoRepository.findAll();
     }
+
+    public Medico findById(Long id){
+        return medicoRepository.getById(id);
+    }
 }

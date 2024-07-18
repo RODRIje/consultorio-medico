@@ -35,4 +35,8 @@ public class IMedicoService implements MedicoService {
     public List<Medico> findAllMedico() {
         return iMedicoDAO.findAllMedico();
     }
+
+    public Medico findById(Long id){
+        return iMedicoDAO.findById(id);
+    }
 }

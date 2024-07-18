@@ -50,11 +50,28 @@ public class MedicoController {
         }
     }
 
-   /* @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateMedicoById(@PathVariable Long id, @RequestBody MedicoDTO medicoDTO){
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateMedicoById(@PathVariable Long id, @RequestBody MedicoDTO medicoDTO) {
 
-        if (id != null && id > 0 && medicoDTO != null){
+        if (id != null && id > 0 && medicoDTO != null) {
+            Optional<Medico> medicoOptional = Optional.ofNullable(iMedicoService.findById(id));
 
+            if (medicoOptional.isPresent()) {
+                Medico medico = new Medico();
+
+                medico.setNombre(medicoDTO.getNombre());
+                medico.setApellido(medicoDTO.getApellido());
+                medico.setEmail(medicoDTO.getEmail());
+                medico.setEspecialidad(medicoDTO.getEspecialidad());
+                medico.setHorariosDisponibles(medicoDTO.getHorariosDisponibles());
+                medico.setMatricula(medicoDTO.getMatricula());
+
+                iMedicoService.saveMedico(medico);
+
+                return ResponseEntity.ok("Medico actualizado");
+            }
         }
-    }*/
+        return ResponseEntity.badRequest().build();
+    }
+
 }
