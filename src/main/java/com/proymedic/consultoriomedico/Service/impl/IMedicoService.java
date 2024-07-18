@@ -7,6 +7,7 @@ import com.proymedic.consultoriomedico.Service.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class IMedicoService implements MedicoService {
     @Autowired
@@ -18,8 +19,9 @@ public class IMedicoService implements MedicoService {
     }
 
     @Override
-    public void updateMedico(Long id) {
-
+    public Medico updateMedico(Long id, Medico medico) {
+        Medico medicoUpdate = iMedicoDAO.updateMedico(id, medico);
+        return  medicoUpdate;
     }
 
     @Override

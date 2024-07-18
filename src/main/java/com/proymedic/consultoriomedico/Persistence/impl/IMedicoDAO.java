@@ -6,6 +6,7 @@ import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
 public class IMedicoDAO implements MedicoDAO {
     @Autowired
@@ -16,8 +17,17 @@ public class IMedicoDAO implements MedicoDAO {
     }
 
     @Override
-    public void updateMedico(Long id) {
+    public Medico updateMedico(Long id, Medico medico) {
+        Medico medicoUpdate = medicoRepository.findById(id).get();
 
+        medicoUpdate.setNombre(medico.getNombre());
+        medicoUpdate.setApellido(medico.getApellido());
+        medicoUpdate.setEmail(medico.getEmail());
+        medicoUpdate.setEspecialidad(medico.getEspecialidad());
+        medicoUpdate.setHorariosDisponibles(medico.getHorariosDisponibles());
+        medicoUpdate.setMatricula(medico.getMatricula());
+
+        return medicoUpdate;
     }
 
     @Override
