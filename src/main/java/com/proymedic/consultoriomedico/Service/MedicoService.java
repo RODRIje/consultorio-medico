@@ -15,7 +15,7 @@ public interface MedicoService {
     Medico updateMedico(Long id, Medico medico);
 
     // Eñiminar medico
-    void deleteMedico(Long id);
+    Boolean deleteMedico(Long id);
 
     // Listar medicos
     List<Medico> findAllMedico();

@@ -31,8 +31,13 @@ public class IMedicoDAO implements MedicoDAO {
     }
 
     @Override
-    public void deleteMedico(Long id) {
-        medicoRepository.deleteById(id);
+    public Boolean deleteMedico(Long id) {
+        try {
+            medicoRepository.deleteById(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     @Override

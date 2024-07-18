@@ -25,8 +25,8 @@ public class IMedicoService implements MedicoService {
     }
 
     @Override
-    public void deleteMedico(Long id) {
-        iMedicoDAO.deleteMedico(id);
+    public Boolean deleteMedico(Long id) {
+        return iMedicoDAO.deleteMedico(id);
     }
 
     @Override
