@@ -49,4 +49,13 @@ public class CitaController {
 
         return ResponseEntity.created(new URI("/api/cita/save")).build();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteCitaById(@PathVariable Long id){
+        if (id != null){
+            iCitaService.deleteCita(id);
+            return ResponseEntity.noContent().build();
+        }else
+            return ResponseEntity.badRequest().body("Id incorrecto");
+    }
 }
