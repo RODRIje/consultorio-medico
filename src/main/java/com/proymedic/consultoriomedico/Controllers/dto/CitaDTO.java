@@ -16,9 +16,9 @@ import java.time.LocalTime;
 @Builder
 public class CitaDTO {
     private Long id;
-    private Cliente cliente;
-    private Medico medico;
-    private LocalDate fecha;
-    private LocalTime hora;
+    private Long cliente;
+    private Long medico;
+    private LocalDate fecha; // YYYY:MM:DD
+    private LocalTime hora; // HH:MM
     private String observaciones;
 }
