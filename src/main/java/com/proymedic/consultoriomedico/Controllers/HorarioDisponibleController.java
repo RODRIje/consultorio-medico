@@ -43,4 +43,14 @@ public class HorarioDisponibleController {
 
         return ResponseEntity.created(new URI("/api/horariodis/save")).build();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        if (id != null && id > 0){
+            iHorarioDisponibleService.deleteHorarioDispo(id);
+            return ResponseEntity.noContent().build();
+        }else {
+           return ResponseEntity.badRequest().body("Id incorrecto");
+        }
+    }
 }

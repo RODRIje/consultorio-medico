@@ -33,11 +33,7 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
 
     @Override
     public void deleteHorarioDispo(Long id) {
-        if (id != null && id > 0){
-            iHorarioDisponibleDAO.deleteHorarioDispo(id);
-        }else {
-            ResponseEntity.badRequest().body("Id incorrecto");
-        }
+        iHorarioDisponibleDAO.deleteHorarioDispo(id);
     }
 
     @Override
