@@ -3,6 +3,7 @@ package com.proymedic.consultoriomedico.Persistence.impl;
 import com.proymedic.consultoriomedico.Controllers.dto.HorarioDisponibleDTO;
 import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Persistence.HorarioDisponibleDAO;
+import com.proymedic.consultoriomedico.Repositories.HorarioDisponibleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,24 +13,25 @@ import java.util.List;
 @Component
 public class IHorarioDisponibleDAO implements HorarioDisponibleDAO {
     @Autowired
-    private HorarioDisponibleDAO horarioDisponibleDAO;
+    private HorarioDisponibleRepository horarioDisponibleRepository;
+
     @Override
     public void saveHorarioDispo(HorarioDisponible horarioDisponible) {
-        horarioDisponibleDAO.saveHorarioDispo(horarioDisponible);
+        horarioDisponibleRepository.save(horarioDisponible);
     }
 
     @Override
     public List<HorarioDisponible> findAllHorarios() {
-        return horarioDisponibleDAO.findAllHorarios();
+        return horarioDisponibleRepository.findAll();
     }
 
     @Override
     public void deleteHorarioDispo(Long id) {
-        horarioDisponibleDAO.deleteHorarioDispo(id);
+        horarioDisponibleRepository.deleteById(id);
     }
 
     @Override
     public HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin) {
-        return horarioDisponibleDAO.updateHorario(id, diaSemana, horaInicio, horaFin);
+        return null; // Crear metodo en el repository para que haga el update correspondiente
     }
 }
