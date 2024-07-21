@@ -1,5 +1,6 @@
 package com.proymedic.consultoriomedico.Persistence;
 
+import com.proymedic.consultoriomedico.Controllers.dto.HorarioDisponibleDTO;
 import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 
 import java.time.LocalTime;
@@ -9,7 +10,7 @@ public interface HorarioDisponibleDAO {
     //AVERIGUAR QUE METODOS UTILIZAR
 
     // Crear (save) el horaioDisponible del medico
-    void saveHorarioDispo(HorarioDisponible horarioDisponible);
+    void saveHorarioDispo(HorarioDisponibleDTO horarioDisponible);
 
     // Traer todos los horariosDisponible de todos los medico
     List<HorarioDisponible> findAllHorarios();

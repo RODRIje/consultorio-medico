@@ -1,5 +1,6 @@
 package com.proymedic.consultoriomedico.Persistence.impl;
 
+import com.proymedic.consultoriomedico.Controllers.dto.HorarioDisponibleDTO;
 import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Persistence.HorarioDisponibleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class IHorarioDisponibleDAO implements HorarioDisponibleDAO {
     @Autowired
     private HorarioDisponibleDAO horarioDisponibleDAO;
     @Override
-    public void saveHorarioDispo(HorarioDisponible horarioDisponible) {
+    public void saveHorarioDispo(HorarioDisponibleDTO horarioDisponible) {
         horarioDisponibleDAO.saveHorarioDispo(horarioDisponible);
     }
 
