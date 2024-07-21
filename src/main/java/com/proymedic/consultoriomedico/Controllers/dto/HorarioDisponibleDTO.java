@@ -17,5 +17,5 @@ public class HorarioDisponibleDTO {
     private String diaSemana;
     private LocalTime horaInicio;
     private LocalTime horaFin;
-    private Medico medico;
+    private Long medico;
 }
