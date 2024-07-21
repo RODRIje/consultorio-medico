@@ -23,15 +23,7 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
 
     @Override
     public void saveHorarioDispo(HorarioDisponible horarioDisponible) {
-        HorarioDisponibleDTO horarioSave = new HorarioDisponibleDTO();
-        Medico medico = iMedicoDAO.findById(horarioDisponible.getId());
-
-        horarioSave.setDiaSemana(horarioDisponible.getDiaSemana());
-        horarioSave.setHoraInicio(horarioDisponible.getHoraInicio());
-        horarioSave.setHoraFin(horarioDisponible.getHoraFin());
-        horarioSave.setMedico(medico);
-
-        iHorarioDisponibleDAO.saveHorarioDispo(horarioSave);
+        iHorarioDisponibleDAO.saveHorarioDispo(horarioDisponible);
     }
 
     @Override

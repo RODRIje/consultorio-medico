@@ -10,7 +10,7 @@ public interface HorarioDisponibleDAO {
     //AVERIGUAR QUE METODOS UTILIZAR
 
     // Crear (save) el horaioDisponible del medico
-    void saveHorarioDispo(HorarioDisponibleDTO horarioDisponible);
+    void saveHorarioDispo(HorarioDisponible horarioDisponible);
 
     // Traer todos los horariosDisponible de todos los medico
     List<HorarioDisponible> findAllHorarios();

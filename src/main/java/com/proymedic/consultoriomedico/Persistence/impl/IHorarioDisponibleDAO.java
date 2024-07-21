@@ -14,7 +14,7 @@ public class IHorarioDisponibleDAO implements HorarioDisponibleDAO {
     @Autowired
     private HorarioDisponibleDAO horarioDisponibleDAO;
     @Override
-    public void saveHorarioDispo(HorarioDisponibleDTO horarioDisponible) {
+    public void saveHorarioDispo(HorarioDisponible horarioDisponible) {
         horarioDisponibleDAO.saveHorarioDispo(horarioDisponible);
     }
 
