@@ -53,7 +53,7 @@ public class ClienteController {
                 clienteUpdate.setObraSocial(clienteDTO.getObraSocial());
                 clienteUpdate.setNombreObraSocial(clienteDTO.getNombreObraSocial());
 
-                iClienteService.saveCliente(clienteUpdate);
+                iClienteService.updateCliente(id, clienteUpdate);
 
                 return ResponseEntity.ok("Cliente actualizado");
             }
