@@ -19,8 +19,7 @@ public class IClienteDAO implements ClienteDAO {
 
     @Override
     public Cliente updateCliente(Long id, Cliente cliente) {
-        Cliente clienteUpdate = clienteRepository.findById(id).get();
-
+        Cliente clienteUpdate = findById(id);
         clienteUpdate.setNombre(cliente.getNombre());
         clienteUpdate.setApellido(cliente.getApellido());
         clienteUpdate.setEmail(cliente.getEmail());
