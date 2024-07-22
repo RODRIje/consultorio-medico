@@ -45,7 +45,7 @@ public class ClienteController {
             Optional<Cliente> clienteOptional = Optional.ofNullable(iClienteService.findById(id));
 
             if (clienteOptional.isPresent()){
-                Cliente clienteUpdate = new Cliente();
+                Cliente clienteUpdate = clienteOptional.get();
 
                 clienteUpdate.setNombre(clienteDTO.getNombre());
                 clienteUpdate.setApellido(clienteDTO.getApellido());
