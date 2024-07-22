@@ -11,7 +11,7 @@ public interface ClienteDAO {
     void saveCliente(Cliente cliente);
 
     // Actualizar Cliente
-    Cliente updateCliente(Long id, Cliente cliente);
+    void updateCliente(Long id, Cliente cliente);
 
     // Eliminar Cliente
     void deleteCliente(Long id);
