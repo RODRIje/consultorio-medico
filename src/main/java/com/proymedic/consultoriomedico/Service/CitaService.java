@@ -12,7 +12,7 @@ public interface CitaService {
     void saveCita(Cita cita);
 
     // Actualizar Cita
-    void updateCita(Long id);
+    void updateCita(Long id, Cita cita);
 
     // Cancelar/eliminar cita
     void deleteCita(Long id);
@@ -21,5 +21,5 @@ public interface CitaService {
     List<Cita> findAllCita();
 
     // Buscar cita por id
-    Optional<Cita> findById(Long id);
+    Cita findById(Long id);
 }

@@ -1,7 +1,11 @@
 package com.proymedic.consultoriomedico.Service.impl;
 
 import com.proymedic.consultoriomedico.Entities.Cita;
+import com.proymedic.consultoriomedico.Entities.Cliente;
+import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Persistence.impl.ICitaDAO;
+import com.proymedic.consultoriomedico.Persistence.impl.IClienteDAO;
+import com.proymedic.consultoriomedico.Persistence.impl.IMedicoDAO;
 import com.proymedic.consultoriomedico.Service.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,10 @@ import java.util.Optional;
 public class ICitaService implements CitaService {
     @Autowired
     private ICitaDAO iCitaDAO;
+    @Autowired
+    private IClienteDAO iClienteDAO;
+    @Autowired
+    private IMedicoDAO iMedicoDAO;
 
     @Override
     public void saveCita(Cita cita) {
@@ -20,8 +28,18 @@ public class ICitaService implements CitaService {
     }
 
     @Override
-    public void updateCita(Long id) {
+    public void updateCita(Long id, Cita cita) {
+        Cita citaUpdate = findById(id);
+        Medico medico = iMedicoDAO.findById(cita.getId());
+        Cliente cliente = iClienteDAO.findById(cita.getId());
 
+        citaUpdate.setCliente(cliente);
+        citaUpdate.setMedico(medico);
+        citaUpdate.setHora(cita.getHora());
+        citaUpdate.setFecha(cita.getFecha());
+        citaUpdate.setObservaciones(cita.getObservaciones());
+
+        iCitaDAO.saveCita(citaUpdate);
     }
 
     @Override
@@ -35,7 +53,7 @@ public class ICitaService implements CitaService {
     }
 
     @Override
-    public Optional<Cita> findById(Long id) {
+    public Cita findById(Long id) {
         return iCitaDAO.findById(id);
     }
 }
