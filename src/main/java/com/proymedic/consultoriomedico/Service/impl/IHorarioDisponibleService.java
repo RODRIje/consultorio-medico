@@ -40,4 +40,9 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
     public HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin) {
         return null;
     }
+
+    @Override
+    public HorarioDisponible findById(Long id) {
+        return iHorarioDisponibleDAO.findById(id);
+    }
 }

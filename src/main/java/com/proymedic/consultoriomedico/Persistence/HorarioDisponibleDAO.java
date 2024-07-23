@@ -20,4 +20,7 @@ public interface HorarioDisponibleDAO {
 
     // Actualizar un horarioDisponible
     HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin);
+
+    // Traer un horario por id
+    HorarioDisponible findById(Long id);
 }

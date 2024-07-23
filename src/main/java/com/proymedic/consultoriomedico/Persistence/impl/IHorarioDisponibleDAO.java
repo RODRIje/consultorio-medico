@@ -34,4 +34,9 @@ public class IHorarioDisponibleDAO implements HorarioDisponibleDAO {
     public HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin) {
         return null; // Crear metodo en el repository para que haga el update correspondiente
     }
+
+    @Override
+    public HorarioDisponible findById(Long id) {
+        return horarioDisponibleRepository.getById(id);
+    }
 }
