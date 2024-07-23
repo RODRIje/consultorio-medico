@@ -41,6 +41,7 @@ public class ClienteController {
 
     @PutMapping("update/{id}")
     public ResponseEntity<?> updateClienteById(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO){
+
         if (id != null && id > 0 && clienteDTO != null){
             Optional<Cliente> clienteOptional = Optional.ofNullable(iClienteService.findById(id));
 

@@ -1,6 +1,7 @@
 package com.proymedic.consultoriomedico.Controllers;
 
 import com.proymedic.consultoriomedico.Controllers.dto.MedicoDTO;
+import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.apache.catalina.connector.Response;
@@ -12,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/medico")
@@ -57,21 +59,31 @@ public class MedicoController {
             Optional<Medico> medicoOptional = Optional.ofNullable(iMedicoService.findById(id));
 
             if (medicoOptional.isPresent()) {
-                Medico medico = new Medico();
+                Medico medico = medicoOptional.get();
 
                 medico.setNombre(medicoDTO.getNombre());
                 medico.setApellido(medicoDTO.getApellido());
                 medico.setEmail(medicoDTO.getEmail());
                 medico.setEspecialidad(medicoDTO.getEspecialidad());
-                medico.setHorariosDisponibles(medicoDTO.getHorariosDisponibles());
                 medico.setMatricula(medicoDTO.getMatricula());
 
-                iMedicoService.saveMedico(medico);
+                // Limpiar y agregar los nuevos elementos a la colección
+                medico.getHorariosDisponibles().clear();
+                medicoDTO.getHorariosDisponibles().forEach(horarioDTO -> {
+                    HorarioDisponible horario = new HorarioDisponible();
+                    horario.setDiaSemana(horarioDTO.getDiaSemana());
+                    horario.setHoraInicio(horarioDTO.getHoraInicio());
+                    horario.setHoraFin(horarioDTO.getHoraFin());
+                    medico.getHorariosDisponibles().add(horario);
+                });
 
-                return ResponseEntity.ok("Medico actualizado");
+                iMedicoService.updateMedico(id, medico);
+
+                return ResponseEntity.ok("Médico actualizado");
             }
         }
         return ResponseEntity.badRequest().build();
     }
+
 
 }
