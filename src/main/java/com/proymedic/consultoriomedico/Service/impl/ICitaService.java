@@ -2,7 +2,6 @@ package com.proymedic.consultoriomedico.Service.impl;
 
 import com.proymedic.consultoriomedico.Entities.Cita;
 import com.proymedic.consultoriomedico.Persistence.impl.ICitaDAO;
-import com.proymedic.consultoriomedico.Repositories.CitaRepository;
 import com.proymedic.consultoriomedico.Service.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,8 @@ public class ICitaService implements CitaService {
     }
 
     @Override
-    public Cita updateCita(Long id) {
-        return null;
+    public void updateCita(Long id) {
+
     }
 
     @Override
@@ -33,5 +32,10 @@ public class ICitaService implements CitaService {
     @Override
     public List<Cita> findAllCita() {
         return iCitaDAO.findAllCita();
+    }
+
+    @Override
+    public Optional<Cita> findById(Long id) {
+        return iCitaDAO.findById(id);
     }
 }

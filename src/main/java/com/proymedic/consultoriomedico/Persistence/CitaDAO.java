@@ -11,11 +11,14 @@ public interface CitaDAO {
     void saveCita(Cita cita);
 
     // Actualizar Cita
-    Cita updateCita(Long id);
+    void updateCita(Long id, Cita cita);
 
     // Cancelar/eliminar cita
     void deleteCita(Long id);
 
     // Listar todas las citas
     List<Cita> findAllCita();
+
+    // Buscar cita por id
+    Cita findById(Long id);
 }
