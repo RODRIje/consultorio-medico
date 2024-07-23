@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cita")
@@ -48,6 +49,31 @@ public class CitaController {
         iCitaService.saveCita(citaActualizada);
 
         return ResponseEntity.created(new URI("/api/cita/save")).build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateCita(@PathVariable Long id, @RequestBody CitaDTO citaDTO){
+
+        if (id != null && id > 0 && citaDTO != null){
+            Optional<Cita> citaOptional = Optional.ofNullable(iCitaService.findById(id));
+
+            if (citaOptional.isPresent()){
+                Cita citaUpdate = citaOptional.get();
+                Medico medico = iMedicoService.findById(citaDTO.getMedico());
+                Cliente cliente = iClienteService.findById(citaDTO.getCliente());
+
+                citaUpdate.setObservaciones(citaDTO.getObservaciones());
+                citaUpdate.setHora(citaDTO.getHora());
+                citaUpdate.setFecha(citaDTO.getFecha());
+                citaUpdate.setCliente(cliente);
+                citaUpdate.setMedico(medico);
+
+                iCitaService.saveCita(citaUpdate);
+
+                return ResponseEntity.ok("Cita actualizada con exito!!");
+            }
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping("/delete/{id}")
