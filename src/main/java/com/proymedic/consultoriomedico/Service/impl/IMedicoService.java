@@ -21,9 +21,16 @@ public class IMedicoService implements MedicoService {
     }
 
     @Override
-    public Medico updateMedico(Long id, Medico medico) {
-        Medico medicoUpdate = iMedicoDAO.updateMedico(id, medico);
-        return  medicoUpdate;
+    public void updateMedico(Long id, Medico medico) {
+        Medico medicoUpdate = findById(id);
+        medicoUpdate.setNombre(medico.getNombre());
+        medicoUpdate.setApellido(medico.getApellido());
+        medicoUpdate.setMatricula(medico.getMatricula());
+        medicoUpdate.setEmail(medico.getEmail());
+        medicoUpdate.setEspecialidad(medico.getEspecialidad());
+        medicoUpdate.setHorariosDisponibles(medico.getHorariosDisponibles());
+
+        iMedicoDAO.saveMedico(medicoUpdate);
     }
 
     @Override

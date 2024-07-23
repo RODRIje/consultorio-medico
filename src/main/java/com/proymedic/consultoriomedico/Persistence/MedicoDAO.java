@@ -12,7 +12,7 @@ public interface MedicoDAO {
     void saveMedico(Medico medico);
 
     // Actualizar Medico
-    Medico updateMedico(Long id, Medico medico);
+    void updateMedico(Long id, Medico medico);
 
     // Eñiminar medico
     Boolean deleteMedico(Long id);

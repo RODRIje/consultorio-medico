@@ -19,9 +19,8 @@ public class IMedicoDAO implements MedicoDAO {
     }
 
     @Override
-    public Medico updateMedico(Long id, Medico medico) {
-        Medico medicoUpdate = medicoRepository.findById(id).get();
-
+    public void updateMedico(Long id, Medico medico) {
+        Medico medicoUpdate = findById(id);
         medicoUpdate.setNombre(medico.getNombre());
         medicoUpdate.setApellido(medico.getApellido());
         medicoUpdate.setEmail(medico.getEmail());
@@ -29,7 +28,7 @@ public class IMedicoDAO implements MedicoDAO {
         medicoUpdate.setHorariosDisponibles(medico.getHorariosDisponibles());
         medicoUpdate.setMatricula(medico.getMatricula());
 
-        return medicoUpdate;
+        medicoRepository.save(medicoUpdate);
     }
 
     @Override
