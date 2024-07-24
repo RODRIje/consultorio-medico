@@ -27,7 +27,7 @@ public class MedicoController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> guardarMedico(@RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
+    public ResponseEntity<?> saveMedico(@RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
         Medico medico = new Medico();
 
         medico.setNombre(medicoDTO.getNombre());

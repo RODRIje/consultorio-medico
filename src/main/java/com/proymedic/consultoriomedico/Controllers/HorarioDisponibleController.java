@@ -30,7 +30,7 @@ public class HorarioDisponibleController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody HorarioDisponibleDTO horarioDisponibleDTO) throws URISyntaxException {
+    public ResponseEntity<?> saveHorario(@RequestBody HorarioDisponibleDTO horarioDisponibleDTO) throws URISyntaxException {
 
         HorarioDisponible horario = new HorarioDisponible();
         Medico medico = iMedicoService.findById(horarioDisponibleDTO.getMedico());
