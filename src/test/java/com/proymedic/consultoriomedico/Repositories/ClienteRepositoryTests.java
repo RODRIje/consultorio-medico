@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -70,5 +71,49 @@ public class ClienteRepositoryTests {
         // then
         assertThat(clienteList).isNotNull();
         assertThat(clienteList.size()).isEqualTo(5);
+    }
+
+    @DisplayName("Test para mostrar un cliente por id")
+    @Test
+    void testListClineteById(){
+        // given
+        clienteRepository.save(clienteFijo);
+        // when
+        Cliente cliente = clienteRepository.findById(clienteFijo.getId()).get();
+        // then
+        assertThat(cliente).isNotNull();
+    }
+
+    @DisplayName("Test para actualizar un cliente")
+    @Test
+    void testUpdateCliente(){
+        // given
+        clienteRepository.save(clienteFijo);
+        // when
+        Cliente clienteGuardado = clienteRepository.findById(clienteFijo.getId()).get();
+        clienteGuardado.setNombre("Ricardo");
+        clienteGuardado.setApellido("Iorio");
+        clienteGuardado.setEmail("ricardero@gmail.com");
+        clienteGuardado.setObraSocial(true);
+        clienteGuardado.setNombreObraSocial("SWISS MEDICAL");
+        Cliente clienteUpdate = clienteRepository.save(clienteGuardado);
+        // then
+        assertThat(clienteUpdate.getNombre()).isEqualTo("Ricardo");
+        assertThat(clienteUpdate.getApellido()).isEqualTo("Iorio");
+        assertThat(clienteUpdate.getEmail()).isEqualTo("ricardero@gmail.com");
+        assertThat(clienteUpdate.getObraSocial()).isEqualTo(true);
+        assertThat(clienteUpdate.getNombreObraSocial()).isEqualTo("SWISS MEDICAL");
+    }
+
+    @DisplayName("Test para eliminar un cliente por id")
+    @Test
+    void testDeleteClienteById(){
+        // given
+        clienteRepository.save(clienteFijo);
+        // when
+        clienteRepository.deleteById(clienteFijo.getId());
+        Optional<Cliente> clienteOptional = clienteRepository.findById(clienteFijo.getId());
+        // then
+        assertThat(clienteOptional).isEmpty();
     }
 }
