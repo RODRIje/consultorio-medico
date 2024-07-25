@@ -13,11 +13,11 @@ import java.util.List;
 @Service
 public class IClienteService implements ClienteService {
     @Autowired
-    private IClienteDAO iClienteDAO;
+    private ClienteRepository clienteRepository;
 
     @Override
     public void saveCliente(Cliente cliente) {
-        iClienteDAO.saveCliente(cliente);
+        clienteRepository.save(cliente);
     }
     @Override
     public void updateCliente(Long id, Cliente cliente) {
@@ -28,18 +28,18 @@ public class IClienteService implements ClienteService {
         clienteUpdate.setObraSocial(cliente.getObraSocial());
         clienteUpdate.setNombreObraSocial(cliente.getNombreObraSocial());
 
-        iClienteDAO.saveCliente(clienteUpdate);
+        clienteRepository.save(clienteUpdate);
     }
     @Override
     public void deleteCliente(Long id) {
-        iClienteDAO.deleteCliente(id);
+        clienteRepository.deleteById(id);
     }
     @Override
     public List<Cliente> findAllCliente() {
-        return iClienteDAO.findAllCliente();
+        return clienteRepository.findAll();
     }
     @Override
     public Cliente findById(Long id) {
-        return iClienteDAO.findById(id);
+        return clienteRepository.findById(id).orElse(null);
     }
 }
