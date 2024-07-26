@@ -42,4 +42,10 @@ public class IClienteService implements ClienteService {
     public Cliente findById(Long id) {
         return clienteRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Cliente guardarCliente(Cliente cliente) {
+        clienteRepository.save(cliente);
+        return cliente;
+    }
 }
