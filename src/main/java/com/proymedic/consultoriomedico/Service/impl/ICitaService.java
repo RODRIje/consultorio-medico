@@ -59,4 +59,12 @@ public class ICitaService implements CitaService {
     public Cita findById(Long id) {
         return citaRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public Cita guardarCita(Cita cita) {
+        citaRepository.save(cita);
+        return cita;
+    }
+
+
 }

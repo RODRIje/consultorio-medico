@@ -76,7 +76,7 @@ public class MedicoServiceTests {
 
     @DisplayName("Test para buscar clientes por id")
     @Test
-    void tetFindMedicoById(){
+    void tetsFindMedicoById(){
         // given
         Medico medico = Medico.builder()
                 .id(3L)

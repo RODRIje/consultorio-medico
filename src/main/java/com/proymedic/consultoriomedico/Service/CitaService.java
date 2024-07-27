@@ -22,4 +22,7 @@ public interface CitaService {
 
     // Buscar cita por id
     Cita findById(Long id);
+
+    // Crear cita y retornar cita
+    Cita guardarCita(Cita cita);
 }
