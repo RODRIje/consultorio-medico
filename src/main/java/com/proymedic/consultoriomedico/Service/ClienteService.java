@@ -22,7 +22,7 @@ public interface ClienteService {
     // Buscar cliente por id
     Cliente findById(Long id);
 
-    // crear cliente con return del cliente
+    // Crear cliente con return del cliente
     Cliente guardarCliente(Cliente cliente);
 
 }

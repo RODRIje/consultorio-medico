@@ -23,4 +23,7 @@ public interface MedicoService {
     // Buscar medico por id
     Medico findById(Long id);
 
+    // Crear un medico y retornar el medico
+    Medico guardarMedico (Medico medico);
+
 }

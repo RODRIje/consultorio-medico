@@ -13,11 +13,11 @@ import java.util.Optional;
 @Service
 public class IMedicoService implements MedicoService {
     @Autowired
-    private IMedicoDAO iMedicoDAO;
+    private MedicoRepository medicoRepository;
 
     @Override
     public void saveMedico(Medico medico) {
-        iMedicoDAO.saveMedico(medico);
+        medicoRepository.save(medico);
     }
 
     @Override
@@ -30,20 +30,27 @@ public class IMedicoService implements MedicoService {
         medicoUpdate.setEspecialidad(medico.getEspecialidad());
         medicoUpdate.setHorariosDisponibles(medico.getHorariosDisponibles());
 
-        iMedicoDAO.saveMedico(medicoUpdate);
+        medicoRepository.save(medicoUpdate);
     }
 
     @Override
     public Boolean deleteMedico(Long id) {
-        return iMedicoDAO.deleteMedico(id);
+         medicoRepository.deleteById(id);
+         return true;
     }
 
     @Override
     public List<Medico> findAllMedico() {
-        return iMedicoDAO.findAllMedico();
+        return medicoRepository.findAll();
     }
     @Override
     public Medico findById(Long id){
-        return iMedicoDAO.findById(id);
+        return medicoRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Medico guardarMedico(Medico medico) {
+        medicoRepository.save(medico);
+        return  medico;
     }
 }
