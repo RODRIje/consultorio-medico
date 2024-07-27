@@ -6,6 +6,9 @@ import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Persistence.impl.ICitaDAO;
 import com.proymedic.consultoriomedico.Persistence.impl.IClienteDAO;
 import com.proymedic.consultoriomedico.Persistence.impl.IMedicoDAO;
+import com.proymedic.consultoriomedico.Repositories.CitaRepository;
+import com.proymedic.consultoriomedico.Repositories.ClienteRepository;
+import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.CitaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,22 +19,22 @@ import java.util.Optional;
 @Service
 public class ICitaService implements CitaService {
     @Autowired
-    private ICitaDAO iCitaDAO;
+    private CitaRepository citaRepository;
     @Autowired
-    private IClienteDAO iClienteDAO;
+    private ClienteRepository clienteRepository;
     @Autowired
-    private IMedicoDAO iMedicoDAO;
+    private MedicoRepository medicoRepository;
 
     @Override
     public void saveCita(Cita cita) {
-        iCitaDAO.saveCita(cita);
+        citaRepository.save(cita);
     }
 
     @Override
     public void updateCita(Long id, Cita cita) {
         Cita citaUpdate = findById(id);
-        Medico medico = iMedicoDAO.findById(cita.getId());
-        Cliente cliente = iClienteDAO.findById(cita.getId());
+        Medico medico = medicoRepository.findById(cita.getId()).get();
+        Cliente cliente = clienteRepository.findById(cita.getId()).get();
 
         citaUpdate.setCliente(cliente);
         citaUpdate.setMedico(medico);
@@ -39,21 +42,21 @@ public class ICitaService implements CitaService {
         citaUpdate.setFecha(cita.getFecha());
         citaUpdate.setObservaciones(cita.getObservaciones());
 
-        iCitaDAO.saveCita(citaUpdate);
+        citaRepository.save(citaUpdate);
     }
 
     @Override
     public void deleteCita(Long id) {
-        iCitaDAO.deleteCita(id);
+        citaRepository.deleteById(id);
     }
 
     @Override
     public List<Cita> findAllCita() {
-        return iCitaDAO.findAllCita();
+        return citaRepository.findAll();
     }
 
     @Override
     public Cita findById(Long id) {
-        return iCitaDAO.findById(id);
+        return citaRepository.findById(id).orElse(null);
     }
 }
