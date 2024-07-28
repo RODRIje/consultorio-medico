@@ -5,6 +5,8 @@ import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Persistence.impl.IHorarioDisponibleDAO;
 import com.proymedic.consultoriomedico.Persistence.impl.IMedicoDAO;
+import com.proymedic.consultoriomedico.Repositories.HorarioDisponibleRepository;
+import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.HorarioDisponibleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +18,24 @@ import java.util.List;
 @Service
 public class IHorarioDisponibleService implements HorarioDisponibleService {
     @Autowired
-    private IHorarioDisponibleDAO iHorarioDisponibleDAO;
+    private HorarioDisponibleRepository horarioDisponibleRepository;
 
     @Autowired
-    private IMedicoDAO iMedicoDAO;
+    private MedicoRepository medicoRepository;
 
     @Override
     public void saveHorarioDispo(HorarioDisponible horarioDisponible) {
-        iHorarioDisponibleDAO.saveHorarioDispo(horarioDisponible);
+        horarioDisponibleRepository.save(horarioDisponible);
     }
 
     @Override
     public List<HorarioDisponible> findAllHorarios() {
-        return iHorarioDisponibleDAO.findAllHorarios();
+        return horarioDisponibleRepository.findAll();
     }
 
     @Override
     public void deleteHorarioDispo(Long id) {
-        iHorarioDisponibleDAO.deleteHorarioDispo(id);
+        horarioDisponibleRepository.deleteById(id);
     }
 
     @Override
@@ -43,6 +45,6 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
 
     @Override
     public HorarioDisponible findById(Long id) {
-        return iHorarioDisponibleDAO.findById(id);
+        return horarioDisponibleRepository.findById(id).orElse(null);
     }
 }
