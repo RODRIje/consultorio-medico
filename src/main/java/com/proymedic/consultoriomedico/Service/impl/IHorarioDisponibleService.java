@@ -47,4 +47,10 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
     public HorarioDisponible findById(Long id) {
         return horarioDisponibleRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public HorarioDisponible guardarHorario(HorarioDisponible horarioDisponible) {
+        horarioDisponibleRepository.save(horarioDisponible);
+        return horarioDisponible;
+    }
 }

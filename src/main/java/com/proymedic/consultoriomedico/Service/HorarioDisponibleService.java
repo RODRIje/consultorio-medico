@@ -22,4 +22,7 @@ public interface HorarioDisponibleService {
 
     // Traer un horario por id
     HorarioDisponible findById(Long id);
+
+    // Guardar un horario y retornar el horario
+    HorarioDisponible guardarHorario(HorarioDisponible horarioDisponible);
 }
