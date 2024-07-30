@@ -71,11 +71,9 @@ public class MedicoController {
 
                 iMedicoService.updateMedico(id, medico);
 
-                return ResponseEntity.ok("Médico actualizado");
+                return ResponseEntity.ok(medico); // Devolver el objeto Medico actualizado
             }
         }
         return ResponseEntity.badRequest().build();
     }
-
-
 }
