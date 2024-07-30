@@ -15,6 +15,9 @@ public class IMedicoService implements MedicoService {
     @Autowired
     private MedicoRepository medicoRepository;
 
+    @Autowired
+    private IMedicoDAO iMedicoDAO;
+
     @Override
     public void saveMedico(Medico medico) {
         medicoRepository.save(medico);
@@ -50,7 +53,7 @@ public class IMedicoService implements MedicoService {
 
     @Override
     public Medico guardarMedico(Medico medico) {
-        medicoRepository.save(medico);
+        iMedicoDAO.saveMedico(medico);
         return  medico;
     }
 }
