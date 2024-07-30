@@ -18,6 +18,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -64,7 +68,7 @@ public class MedicoControllerTests {
                 .email("renefava@gmail.com")
                 .build();
 
-        given(medicoService.guardarMedico(any(Medico.class)))
+        given(iMedicoService.guardarMedico(any(Medico.class)))
                 .willAnswer((invocation) -> invocation.getArgument(0));
 
         // when
@@ -74,7 +78,76 @@ public class MedicoControllerTests {
 
         // then
         response.andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nombre",is(medico.getNombre())))
+                .andExpect(jsonPath("$.apellido",is(medico.getApellido())))
+                .andExpect(jsonPath("$.email",is(medico.getEmail())));
+    }
+    @Test
+    void testListMedicos() throws  Exception{
+        // given
+        List<Medico> listaMedicos = new ArrayList<>();
+        listaMedicos.add(Medico.builder().nombre("Martin").apellido("Faravelo").especialidad("Clinico").build());
+        listaMedicos.add(Medico.builder().nombre("Paola").apellido("Garcia").especialidad("Pediatra").build());
+        listaMedicos.add(Medico.builder().nombre("Rodrigo").apellido("Gonzalez").especialidad("Cirujano").build());
+        given(iMedicoService.findAllMedico()).willReturn(listaMedicos);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/medico/find"));
+        // then
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",is(listaMedicos.size())));
+    }
+
+    @Test
+    void testUpdateMedico() throws Exception{
+        // given
+        Long medicoId = 1L;
+        Medico medicoInicio = Medico.builder()
+                .nombre("Rene")
+                .apellido("Favaloro")
+                .especialidad("Clinico")
+                .horariosDisponibles(new ArrayList<>()) // Inicializar lista vacía
+                .email("renefava@gmail.com")
+                .build();
+
+        Medico medicoUpdate = Medico.builder()
+                .nombre("Rene Geronimo")
+                .apellido("Favaloro")
+                .especialidad("Cardiocirujano")
+                .horariosDisponibles(new ArrayList<>()) // Inicializar lista vacía
+                .email("renefava@gmail.com")
+                .build();
+
+        given(iMedicoService.findById(medicoId)).willReturn(medicoInicio);
+        given(iMedicoService.ActuMedic(any(Medico.class)))
+                .willAnswer((invocation) -> invocation.getArgument(0));
+        // when
+        ResultActions response = mockMvc.perform(put("/api/medico/update/{id}",medicoId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(medicoUpdate)));
+
+        // then
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.nombre",is(medicoUpdate.getNombre())))
+                .andExpect(jsonPath("$.apellido",is(medicoUpdate.getApellido())))
+                .andExpect(jsonPath("$.especialidad",is(medicoUpdate.getEspecialidad())));
+
+    }
+
+    @Test
+    void testEliminarMedico() throws Exception{
+        //given
+        Long MedicoId = 1L;
+        willDoNothing().given(iMedicoService).deleteMedico(MedicoId);
+
+        //when
+        ResultActions response = mockMvc.perform(delete("/api/medico/delete/{id}",MedicoId));
+
+        //then
+        response.andExpect(status().isNoContent())
+                .andDo(print());
     }
 
 }

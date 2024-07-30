@@ -7,6 +7,7 @@ import com.proymedic.consultoriomedico.Service.MedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,11 +20,6 @@ public class IMedicoService implements MedicoService {
     private IMedicoDAO iMedicoDAO;
 
     @Override
-    public void saveMedico(Medico medico) {
-        medicoRepository.save(medico);
-    }
-
-    @Override
     public void updateMedico(Long id, Medico medico) {
         Medico medicoUpdate = findById(id);
         medicoUpdate.setNombre(medico.getNombre());
@@ -31,15 +27,22 @@ public class IMedicoService implements MedicoService {
         medicoUpdate.setMatricula(medico.getMatricula());
         medicoUpdate.setEmail(medico.getEmail());
         medicoUpdate.setEspecialidad(medico.getEspecialidad());
-        medicoUpdate.setHorariosDisponibles(medico.getHorariosDisponibles());
+        medicoUpdate.setHorariosDisponibles(new ArrayList<>()); // Asignar lista vacía
 
         medicoRepository.save(medicoUpdate);
     }
 
     @Override
-    public Boolean deleteMedico(Long id) {
+    public Medico ActuMedic(Medico medico) {
+        if(medico.getHorariosDisponibles() == null){
+            medico.setHorariosDisponibles(new ArrayList<>()); // Asignar lista vacía
+        }
+        return medicoRepository.save(medico);
+    }
+
+    @Override
+    public void deleteMedico(Long id) {
          medicoRepository.deleteById(id);
-         return true;
     }
 
     @Override
@@ -53,7 +56,6 @@ public class IMedicoService implements MedicoService {
 
     @Override
     public Medico guardarMedico(Medico medico) {
-        iMedicoDAO.saveMedico(medico);
-        return  medico;
+        return medicoRepository.save(medico);
     }
 }
