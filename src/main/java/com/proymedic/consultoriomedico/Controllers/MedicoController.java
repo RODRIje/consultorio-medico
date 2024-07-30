@@ -6,6 +6,8 @@ import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +28,10 @@ public class MedicoController {
        return iMedicoService.findAllMedico();
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<?> saveMedico(@RequestBody MedicoDTO medicoDTO) throws URISyntaxException {
-        Medico medico = new Medico();
-
-        medico.setNombre(medicoDTO.getNombre());
-        medico.setApellido(medicoDTO.getApellido());
-        medico.setMatricula(medicoDTO.getMatricula());
-        medico.setEmail(medicoDTO.getEmail());
-        medico.setEspecialidad(medicoDTO.getEspecialidad());
-        medico.setHorariosDisponibles(medicoDTO.getHorariosDisponibles());
-
-        iMedicoService.saveMedico(medico);
-
-        return ResponseEntity.created(new URI("/api/medico/save")).build();
+    @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> saveMedico(@RequestBody Medico medico){
+        Medico savedMedico = iMedicoService.guardarMedico(medico);
+        return new ResponseEntity<>(savedMedico, HttpStatus.CREATED);
     }
 
     @DeleteMapping("delete/{id}")
