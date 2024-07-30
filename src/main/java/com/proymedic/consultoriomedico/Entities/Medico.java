@@ -26,5 +26,6 @@ public class Medico {
     private String matricula;
 
     @OneToMany(mappedBy = "medico", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<HorarioDisponible> horariosDisponibles = new ArrayList<>();
 }
