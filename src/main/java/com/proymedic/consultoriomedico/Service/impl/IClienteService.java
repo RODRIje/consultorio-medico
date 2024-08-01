@@ -30,6 +30,12 @@ public class IClienteService implements ClienteService {
 
         clienteRepository.save(clienteUpdate);
     }
+
+    @Override
+    public Cliente ActuCliente(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
+
     @Override
     public void deleteCliente(Long id) {
         clienteRepository.deleteById(id);
@@ -45,7 +51,6 @@ public class IClienteService implements ClienteService {
 
     @Override
     public Cliente guardarCliente(Cliente cliente) {
-        clienteRepository.save(cliente);
-        return cliente;
+        return clienteRepository.save(cliente);
     }
 }
