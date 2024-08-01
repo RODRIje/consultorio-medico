@@ -49,7 +49,7 @@ public class ClienteController {
 
                 iClienteService.updateCliente(id, clienteUpdate);
 
-                return ResponseEntity.ok("Cliente actualizado");
+                return ResponseEntity.ok(clienteUpdate); // Devolver el objeto Cliente actualizado
             }
         }
         return ResponseEntity.badRequest().build();
