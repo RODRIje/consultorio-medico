@@ -3,8 +3,10 @@ package com.proymedic.consultoriomedico.Controllers;
 
 import com.proymedic.consultoriomedico.Controllers.dto.ClienteDTO;
 import com.proymedic.consultoriomedico.Entities.Cliente;
+import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +27,9 @@ public class ClienteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveCliente(@RequestBody ClienteDTO clienteDTO) throws URISyntaxException {
-        Cliente cliente = new Cliente();
-
-        cliente.setNombre(clienteDTO.getNombre());
-        cliente.setApellido(clienteDTO.getApellido());
-        cliente.setEmail(clienteDTO.getEmail());
-        cliente.setObraSocial(clienteDTO.getObraSocial());
-        cliente.setNombreObraSocial(clienteDTO.getNombreObraSocial());
-
-        iClienteService.saveCliente(cliente);
-
-        return ResponseEntity.created(new URI("/api/cliente/save")).build();
+    public ResponseEntity<?> saveCliente(@RequestBody Cliente cliente){
+        Cliente savedCliente = iClienteService.guardarCliente(cliente);
+        return new ResponseEntity<>(savedCliente, HttpStatus.CREATED);
     }
 
     @PutMapping("update/{id}")
