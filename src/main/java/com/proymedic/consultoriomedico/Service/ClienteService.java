@@ -1,6 +1,7 @@
 package com.proymedic.consultoriomedico.Service;
 
 import com.proymedic.consultoriomedico.Entities.Cliente;
+import com.proymedic.consultoriomedico.Entities.Medico;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ public interface ClienteService {
 
     // Actualizar Cliente
     void updateCliente(Long id, Cliente cliente);
+    // Actualizar cliente v2
+    Cliente ActuCliente(Cliente cliente);
 
     // Eliminar Cliente
     void deleteCliente(Long id);
