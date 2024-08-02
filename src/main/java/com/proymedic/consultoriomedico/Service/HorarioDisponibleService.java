@@ -18,7 +18,10 @@ public interface HorarioDisponibleService {
     void deleteHorarioDispo(Long id);
 
     // Actualizar un horarioDisponible
-    HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin);
+    void updateHorario(Long id, HorarioDisponible horarioDisponible);
+
+    // Actualizar horario v2
+    HorarioDisponible actHorario(HorarioDisponible horarioDisponible);
 
     // Traer un horario por id
     HorarioDisponible findById(Long id);

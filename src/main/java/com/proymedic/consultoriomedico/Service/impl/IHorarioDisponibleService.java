@@ -39,8 +39,18 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
     }
 
     @Override
-    public HorarioDisponible updateHorario(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin) {
-        return null;
+    public void updateHorario(Long id, HorarioDisponible horarioDisponible) {
+        HorarioDisponible horarioUpdate = findById(id);
+        horarioUpdate.setHoraFin(horarioDisponible.getHoraFin());
+        horarioUpdate.setHoraInicio(horarioDisponible.getHoraInicio());
+        horarioUpdate.setDiaSemana(horarioDisponible.getDiaSemana());
+
+        horarioDisponibleRepository.save(horarioUpdate);
+    }
+
+    @Override
+    public HorarioDisponible actHorario(HorarioDisponible horarioDisponible) {
+        return horarioDisponibleRepository.save(horarioDisponible);
     }
 
     @Override

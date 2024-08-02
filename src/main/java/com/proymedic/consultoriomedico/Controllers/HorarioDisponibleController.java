@@ -7,6 +7,7 @@ import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IHorarioDisponibleService;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,19 +31,9 @@ public class HorarioDisponibleController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveHorario(@RequestBody HorarioDisponibleDTO horarioDisponibleDTO) throws URISyntaxException {
-
-        HorarioDisponible horario = new HorarioDisponible();
-        Medico medico = iMedicoService.findById(horarioDisponibleDTO.getMedico());
-
-        horario.setDiaSemana(horarioDisponibleDTO.getDiaSemana());
-        horario.setHoraInicio(horarioDisponibleDTO.getHoraInicio());
-        horario.setHoraFin(horarioDisponibleDTO.getHoraFin());
-        horario.setMedico(medico);
-
-        iHorarioDisponibleService.saveHorarioDispo(horario);
-
-        return ResponseEntity.created(new URI("/api/horariodis/save")).build();
+    public ResponseEntity<?> saveHorario(@RequestBody HorarioDisponible horarioDisponible){
+        HorarioDisponible horarioSaved =iHorarioDisponibleService.guardarHorario(horarioDisponible);
+        return new ResponseEntity<>(horarioSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
@@ -59,9 +50,9 @@ public class HorarioDisponibleController {
                 horarioDisponible.setHoraFin(horarioDisponibleDTO.getHoraFin());
                 horarioDisponible.setMedico(medico);
 
-                iHorarioDisponibleService.saveHorarioDispo(horarioDisponible);
+                iHorarioDisponibleService.guardarHorario(horarioDisponible);
 
-                return ResponseEntity.ok("Horario actualizado con exito!!");
+                return ResponseEntity.ok(horarioDisponible); // Devolver el objeto HorarioDisponible actualizado
             }
         }
         return ResponseEntity.badRequest().build();
