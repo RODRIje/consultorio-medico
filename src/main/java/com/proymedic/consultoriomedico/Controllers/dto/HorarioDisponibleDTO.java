@@ -13,7 +13,6 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 public class HorarioDisponibleDTO {
-    private Long id;
     private String diaSemana;
     private LocalTime horaInicio;
     private LocalTime horaFin;
