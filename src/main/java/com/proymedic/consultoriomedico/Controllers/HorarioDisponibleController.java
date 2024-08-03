@@ -38,24 +38,31 @@ public class HorarioDisponibleController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateHorario(@PathVariable Long id, @RequestBody HorarioDisponibleDTO horarioDisponibleDTO){
-        if (id != null && id > 0 && horarioDisponibleDTO != null){
-            Optional<HorarioDisponible> horarioDisponibleOptional = Optional.ofNullable(iHorarioDisponibleService.findById(id));
-
-            if (horarioDisponibleOptional.isPresent()){
-                HorarioDisponible horarioDisponible = horarioDisponibleOptional.get();
-                Medico medico = iMedicoService.findById(horarioDisponibleDTO.getMedico());
-
-                horarioDisponible.setDiaSemana(horarioDisponibleDTO.getDiaSemana());
-                horarioDisponible.setHoraInicio(horarioDisponibleDTO.getHoraInicio());
-                horarioDisponible.setHoraFin(horarioDisponibleDTO.getHoraFin());
-                horarioDisponible.setMedico(medico);
-
-                iHorarioDisponibleService.guardarHorario(horarioDisponible);
-
-                return ResponseEntity.ok(horarioDisponible); // Devolver el objeto HorarioDisponible actualizado
-            }
+        if (id == null || id <= 0 || horarioDisponibleDTO == null) {
+            return ResponseEntity.badRequest().body("ID inválido o datos incompletos");
         }
-        return ResponseEntity.badRequest().build();
+
+        Optional<HorarioDisponible> horarioDisponibleOptional = Optional.ofNullable(iHorarioDisponibleService.findById(id));
+
+        if (!horarioDisponibleOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Horario no encontrado");
+        }
+
+        HorarioDisponible horarioDisponible = horarioDisponibleOptional.get();
+        Medico medico = iMedicoService.findById(horarioDisponibleDTO.getMedico());
+
+        if (medico == null) {
+            return ResponseEntity.badRequest().body("Medico no encontrado");
+        }
+
+        horarioDisponible.setDiaSemana(horarioDisponibleDTO.getDiaSemana());
+        horarioDisponible.setHoraInicio(horarioDisponibleDTO.getHoraInicio());
+        horarioDisponible.setHoraFin(horarioDisponibleDTO.getHoraFin());
+        horarioDisponible.setMedico(medico);
+
+        iHorarioDisponibleService.guardarHorario(horarioDisponible);
+
+        return ResponseEntity.ok(horarioDisponible); // Devolver el objeto HorarioDisponible actualizado
     }
 
     @DeleteMapping("/delete/{id}")
