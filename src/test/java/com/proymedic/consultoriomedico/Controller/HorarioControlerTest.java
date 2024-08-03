@@ -113,14 +113,14 @@ public class HorarioControlerTest {
                 .build();
 
         Medico medico2 = Medico.builder()
-                .id(2L) // asegurarse de que el médico tenga un ID
+                .id(2L)
                 .nombre("Pepe")
                 .apellido("Moreta")
                 .especialidad("Cardiocirujano")
                 .build();
 
         HorarioDisponibleDTO horarioActualizado = HorarioDisponibleDTO.builder()
-                .medico(medico2.getId()) // Asegúrate de tener el ID correcto del medico2
+                .medico(medico2.getId()) // Obtener el id del medico
                 .diaSemana("Miercoles")
                 .horaInicio(LocalTime.of(14, 30))
                 .horaFin(LocalTime.of(23, 30))
