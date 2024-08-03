@@ -41,9 +41,12 @@ public class IHorarioDisponibleService implements HorarioDisponibleService {
     @Override
     public void updateHorario(Long id, HorarioDisponible horarioDisponible) {
         HorarioDisponible horarioUpdate = findById(id);
+        Medico medico = medicoRepository.findById(horarioDisponible.getMedico().getId()).get();
+
         horarioUpdate.setHoraFin(horarioDisponible.getHoraFin());
         horarioUpdate.setHoraInicio(horarioDisponible.getHoraInicio());
         horarioUpdate.setDiaSemana(horarioDisponible.getDiaSemana());
+        horarioUpdate.setMedico(medico);
 
         horarioDisponibleRepository.save(horarioUpdate);
     }
