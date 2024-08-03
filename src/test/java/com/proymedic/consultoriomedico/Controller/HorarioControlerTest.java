@@ -1,10 +1,12 @@
 package com.proymedic.consultoriomedico.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.proymedic.consultoriomedico.Controllers.dto.HorarioDisponibleDTO;
 import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Repositories.HorarioDisponibleRepository;
 import com.proymedic.consultoriomedico.Service.impl.IHorarioDisponibleService;
+import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import jakarta.annotation.PostConstruct;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,8 @@ public class HorarioControlerTest {
     private IHorarioDisponibleService iHorarioDisponibleService;
     @MockBean
     private HorarioDisponibleRepository horarioDisponibleRepository;
+    @MockBean
+    private IMedicoService iMedicoService;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -93,7 +97,7 @@ public class HorarioControlerTest {
     }
 
     @Test
-    void testUpdateHorario()throws Exception{
+    void testUpdateHorario() throws Exception {
         // given
         Medico medico1 = Medico.builder()
                 .nombre("Martin")
@@ -104,39 +108,45 @@ public class HorarioControlerTest {
         HorarioDisponible horarioPrimero = HorarioDisponible.builder()
                 .medico(medico1)
                 .diaSemana("Lunes")
-                .horaInicio(LocalTime.of(6,30))
-                .horaFin(LocalTime.of(19,30))
+                .horaInicio(LocalTime.of(6, 30))
+                .horaFin(LocalTime.of(19, 30))
                 .build();
 
         Medico medico2 = Medico.builder()
+                .id(2L) // asegurarse de que el médico tenga un ID
                 .nombre("Pepe")
                 .apellido("Moreta")
                 .especialidad("Cardiocirujano")
                 .build();
 
-        HorarioDisponible horarioActualizado = HorarioDisponible.builder()
-                .medico(medico2)
+        HorarioDisponibleDTO horarioActualizado = HorarioDisponibleDTO.builder()
+                .medico(medico2.getId()) // Asegúrate de tener el ID correcto del medico2
                 .diaSemana("Miercoles")
-                .horaInicio(LocalTime.of(14,30))
-                .horaFin(LocalTime.of(23,30))
+                .horaInicio(LocalTime.of(14, 30))
+                .horaFin(LocalTime.of(23, 30))
                 .build();
+
         given(iHorarioDisponibleService.findById(idHorario)).willReturn(horarioPrimero);
+        given(iMedicoService.findById(anyLong())).willReturn(medico2); // Mockear el servicio de medico
         given(iHorarioDisponibleService.actHorario(any(HorarioDisponible.class)))
                 .willAnswer((invocation) -> invocation.getArgument(0));
+
         // when
         ResultActions response = mockMvc.perform(put("/api/horariodis/update/{id}", idHorario)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(horarioActualizado)));
+
         // then
         response.andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.diaSemana", is(horarioActualizado.getDiaSemana())))
-                .andExpect(jsonPath("$.medico.nombre", is(horarioActualizado.getMedico().getNombre())))
-                .andExpect(jsonPath("$.medico.apellido", is(horarioActualizado.getMedico().getApellido())))
-                .andExpect(jsonPath("$.medico.especialidad", is(horarioActualizado.getMedico().getEspecialidad())))
+                .andExpect(jsonPath("$.medico.nombre", is(medico2.getNombre())))
+                .andExpect(jsonPath("$.medico.apellido", is(medico2.getApellido())))
+                .andExpect(jsonPath("$.medico.especialidad", is(medico2.getEspecialidad())))
                 .andExpect(jsonPath("$.horaInicio", is("14:30:00")))
                 .andExpect(jsonPath("$.horaFin", is("23:30:00")));
     }
+
     @Test
     void testDeleteHorarioById() throws Exception{
         // given
