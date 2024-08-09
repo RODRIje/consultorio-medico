@@ -8,6 +8,7 @@ import com.proymedic.consultoriomedico.Service.impl.ICitaService;
 import com.proymedic.consultoriomedico.Service.impl.IClienteService;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,21 +35,9 @@ public class CitaController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveCita(@RequestBody CitaDTO citaDTO) throws URISyntaxException {
-        Cita citaActualizada = new Cita();
-
-        Medico medico = iMedicoService.findById(citaDTO.getMedico());
-        Cliente cliente = iClienteService.findById(citaDTO.getCliente());
-
-        citaActualizada.setCliente(cliente);
-        citaActualizada.setMedico(medico);
-        citaActualizada.setHora(citaDTO.getHora());
-        citaActualizada.setFecha(citaDTO.getFecha());
-        citaActualizada.setObservaciones(citaDTO.getObservaciones());
-
-        iCitaService.saveCita(citaActualizada);
-
-        return ResponseEntity.created(new URI("/api/cita/save")).build();
+    public ResponseEntity<?> saveCita(@RequestBody Cita cita) throws URISyntaxException {
+        Cita citaSaved = iCitaService.guardarCita(cita);
+        return new ResponseEntity<>(citaSaved, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
