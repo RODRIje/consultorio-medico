@@ -15,7 +15,6 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 public class CitaDTO {
-    private Long id;
     private Long cliente;
     private Long medico;
     private LocalDate fecha; // YYYY:MM:DD

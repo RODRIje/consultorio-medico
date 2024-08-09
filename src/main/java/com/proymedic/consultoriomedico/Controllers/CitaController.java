@@ -43,13 +43,24 @@ public class CitaController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateCita(@PathVariable Long id, @RequestBody CitaDTO citaDTO){
 
-        if (id != null && id > 0 && citaDTO != null){
+        if (id == null || id <= 0 || citaDTO == null) {
+            return ResponseEntity.badRequest().body("ID inválido o datos incompletos");
+        }
             Optional<Cita> citaOptional = Optional.ofNullable(iCitaService.findById(id));
 
-            if (citaOptional.isPresent()){
+            if (!citaOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cita no encontrada");
+            }
                 Cita citaUpdate = citaOptional.get();
                 Medico medico = iMedicoService.findById(citaDTO.getMedico());
                 Cliente cliente = iClienteService.findById(citaDTO.getCliente());
+
+            if (medico == null) {
+                return ResponseEntity.badRequest().body("Medico no encontrado");
+            }
+            if (cliente == null) {
+                return ResponseEntity.badRequest().body("Cliente no encontrado");
+            }
 
                 citaUpdate.setObservaciones(citaDTO.getObservaciones());
                 citaUpdate.setHora(citaDTO.getHora());
@@ -57,13 +68,12 @@ public class CitaController {
                 citaUpdate.setCliente(cliente);
                 citaUpdate.setMedico(medico);
 
-                iCitaService.saveCita(citaUpdate);
+                iCitaService.guardarCita(citaUpdate);
 
-                return ResponseEntity.ok("Cita actualizada con exito!!");
-            }
-        }
-        return ResponseEntity.badRequest().build();
+                return ResponseEntity.ok(citaUpdate); // Devolver el objeto Cita actualizado
     }
+
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCitaById(@PathVariable Long id){
