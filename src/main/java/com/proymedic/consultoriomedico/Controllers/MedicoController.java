@@ -89,4 +89,16 @@ public class MedicoController {
         }
         return ResponseEntity.ok(medicos).getBody(); // Retorna 200 si encuentra la lista de medicos
     }
+
+    @GetMapping("/findname")
+    public List<Medico> findByName(@Param("nombre") String nombre){
+        if (nombre == null || nombre.isEmpty()){
+            return (List<Medico>) ResponseEntity.badRequest().body(null); // 400 si el nombre es null o esta vacio
+        }
+        List<Medico> medicoByname = iMedicoService.findMedicoByname(nombre);
+        if (medicoByname.isEmpty()){
+            return (List<Medico>) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 si no se encuentran medicos
+        }
+        return ResponseEntity.ok(medicoByname).getBody(); // 200 si encuentra la lista de medicos
+    }
 }

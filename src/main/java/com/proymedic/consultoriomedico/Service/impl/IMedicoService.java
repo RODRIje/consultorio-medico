@@ -60,6 +60,11 @@ public class IMedicoService implements MedicoService {
     }
 
     @Override
+    public List<Medico> findMedicoByname(String nombre) {
+        return medicoRepository.findMedicoByname(nombre);
+    }
+
+    @Override
     public Medico guardarMedico(Medico medico) {
         return medicoRepository.save(medico);
     }

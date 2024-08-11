@@ -1,6 +1,8 @@
 package com.proymedic.consultoriomedico.Service;
 
 import com.proymedic.consultoriomedico.Entities.Medico;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +30,7 @@ public interface MedicoService {
 
     // Crear metodo para buscar medicos por su especialidad
     List<Medico> findMedicoByEspecialidad(String especialidad);
+
+    // Crear metodo para buscar medico por nombre
+    List<Medico> findMedicoByname(String nombre);
 }
