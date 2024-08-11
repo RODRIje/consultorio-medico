@@ -2,6 +2,8 @@ package com.proymedic.consultoriomedico.Service;
 
 import com.proymedic.consultoriomedico.Entities.Cliente;
 import com.proymedic.consultoriomedico.Entities.Medico;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -27,5 +29,11 @@ public interface ClienteService {
 
     // Crear cliente con return del cliente
     Cliente guardarCliente(Cliente cliente);
+
+    // Crear metodo para traer todos los clientes que tengan obra social
+    List<Cliente> findClienteTrueObraSocial(Boolean obraSocial);
+
+    // Crear metodo para traer todos los clientes que tengan X obra social
+    List<Cliente> findClienteMismaObraSocial(String nombreObraSocial);
 
 }

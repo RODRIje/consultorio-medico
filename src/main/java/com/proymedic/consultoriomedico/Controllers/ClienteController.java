@@ -6,6 +6,7 @@ import com.proymedic.consultoriomedico.Entities.Cliente;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -63,5 +64,15 @@ public class ClienteController {
         }else {
             return ResponseEntity.badRequest().body("Id incorrecto");
         }
+    }
+
+    @GetMapping("/findobrasocialtrue")
+    public List<Cliente> findObraSocialTrue(@Param("obraSocial") Boolean obraSocial){
+        return iClienteService.findClienteTrueObraSocial(obraSocial);
+    }
+
+    @GetMapping("findmismaobrasocial")
+    public List<Cliente> findMismaObraSocial(@Param("nombreObraSocial") String nombreObraSocial){
+        return iClienteService.findClienteMismaObraSocial(nombreObraSocial);
     }
 }

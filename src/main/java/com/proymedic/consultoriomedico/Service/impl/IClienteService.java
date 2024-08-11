@@ -53,4 +53,14 @@ public class IClienteService implements ClienteService {
     public Cliente guardarCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
+
+    @Override
+    public List<Cliente> findClienteTrueObraSocial(Boolean obraSocial) {
+        return clienteRepository.findClienteTrueObraSocial(obraSocial);
+    }
+
+    @Override
+    public List<Cliente> findClienteMismaObraSocial(String nombreObraSocial) {
+        return clienteRepository.findClienteMismaObraSocial(nombreObraSocial);
+    }
 }
