@@ -6,6 +6,7 @@ import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -75,5 +76,17 @@ public class MedicoController {
             }
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/findespecialidad")
+    public List<Medico> findByEspecialidad(@Param("especialidad") String especialidad){
+        if (especialidad == null || especialidad.isEmpty()){
+            return (List<Medico>) ResponseEntity.badRequest().body(null); // Retorna 400 si la especialidad es null o esta vacia
+        }
+        List<Medico> medicos = iMedicoService.findMedicoByEspecialidad(especialidad);
+        if (medicos.isEmpty()){
+            return (List<Medico>) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Retorna 404 si no se encuentran medicos
+        }
+        return ResponseEntity.ok(medicos).getBody(); // Retorna 200 si encuentra la lista de medicos
     }
 }

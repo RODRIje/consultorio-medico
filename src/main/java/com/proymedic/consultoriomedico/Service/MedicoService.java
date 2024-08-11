@@ -25,4 +25,7 @@ public interface MedicoService {
 
     // Buscar medico por id
     Medico findById(Long id);
+
+    // Crear metodo para buscar medicos por su especialidad
+    List<Medico> findMedicoByEspecialidad(String especialidad);
 }

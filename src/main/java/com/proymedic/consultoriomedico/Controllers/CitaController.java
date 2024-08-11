@@ -72,9 +72,6 @@ public class CitaController {
 
                 return ResponseEntity.ok(citaUpdate); // Devolver el objeto Cita actualizado
     }
-
-
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteCitaById(@PathVariable Long id){
         if (id != null){
