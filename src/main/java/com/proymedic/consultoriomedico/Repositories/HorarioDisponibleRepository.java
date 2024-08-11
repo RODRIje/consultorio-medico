@@ -9,6 +9,5 @@ import java.time.LocalTime;
 
 @Repository
 public interface HorarioDisponibleRepository extends JpaRepository<HorarioDisponible, Long> {
-   /* @Query
-    public HorarioDisponible update(Long id, String diaSemana, LocalTime horaInicio, LocalTime horaFin);*/
+
 }

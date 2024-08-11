@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
+    // Crear metodo para buscar medicos por su especialidad
+    // Crear metedo para buscar medico por nombre
 }
