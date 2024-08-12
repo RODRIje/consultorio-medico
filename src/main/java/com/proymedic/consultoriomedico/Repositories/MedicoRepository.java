@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
+
     // Crear metodo para buscar medicos por su especialidad
     @Query("SELECT m FROM Medico m WHERE m.especialidad = :especialidad")
     List<Medico> findMedicoByEspecialidad(@Param("especialidad")String especialidad);

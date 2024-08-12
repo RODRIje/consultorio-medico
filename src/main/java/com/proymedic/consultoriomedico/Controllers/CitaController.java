@@ -8,6 +8,7 @@ import com.proymedic.consultoriomedico.Service.impl.ICitaService;
 import com.proymedic.consultoriomedico.Service.impl.IClienteService;
 import com.proymedic.consultoriomedico.Service.impl.IMedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -79,5 +80,29 @@ public class CitaController {
             return ResponseEntity.noContent().build();
         }else
             return ResponseEntity.badRequest().body("Id incorrecto");
+    }
+
+    @GetMapping("/findbymedico")
+    public ResponseEntity<?> findByMedico(@Param("medico") String medico){
+        if (medico == null || medico.isEmpty()){
+            return ResponseEntity.badRequest().body(null);
+        }
+        List<Cita> citaList = iCitaService.findByMedico(medico);
+        if (citaList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(citaList);
+    }
+
+    @GetMapping("/findbycliente")
+    public ResponseEntity<?> findByCliente(@Param("cliente") String cliente){
+        if (cliente ==  null || cliente.isEmpty()){
+            return ResponseEntity.badRequest().body("El cliente es null");
+        }
+        List<Cita> citaList = iCitaService.findByCliente(cliente);
+        if (citaList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La lista de citas esta vacia");
+        }
+        return ResponseEntity.ok(citaList);
     }
 }

@@ -66,5 +66,14 @@ public class ICitaService implements CitaService {
         return cita;
     }
 
+    @Override
+    public List<Cita> findByMedico(String medico) {
+        return citaRepository.findByMedico(medico);
+    }
+
+    @Override
+    public List<Cita> findByCliente(String cliente) {
+        return citaRepository.findByCliente(cliente);
+    }
 
 }
