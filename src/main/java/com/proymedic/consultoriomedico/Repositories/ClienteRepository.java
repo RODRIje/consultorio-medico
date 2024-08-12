@@ -17,4 +17,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT c FROM Cliente c WHERE c.nombreObraSocial = :nombreObraSocial")
     List<Cliente> findClienteMismaObraSocial(@Param("nombreObraSocial") String nombreObraSocial);
     // Crear metodo para traer clientes por su nombre
+    @Query("SELECT c FROM Cliente c WHERE c.nombre = :nombre")
+    List<Cliente> findClienteByName(@Param("nombre") String nombre);
 }

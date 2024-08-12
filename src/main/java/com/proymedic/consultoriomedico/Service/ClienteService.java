@@ -36,4 +36,7 @@ public interface ClienteService {
     // Crear metodo para traer todos los clientes que tengan X obra social
     List<Cliente> findClienteMismaObraSocial(String nombreObraSocial);
 
+    // Crear metodo para traer clientes por su nombre
+    List<Cliente> findClienteByName(String nombre);
+
 }

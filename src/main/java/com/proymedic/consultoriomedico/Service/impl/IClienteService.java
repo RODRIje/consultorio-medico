@@ -30,12 +30,10 @@ public class IClienteService implements ClienteService {
 
         clienteRepository.save(clienteUpdate);
     }
-
     @Override
     public Cliente ActuCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
-
     @Override
     public void deleteCliente(Long id) {
         clienteRepository.deleteById(id);
@@ -48,19 +46,20 @@ public class IClienteService implements ClienteService {
     public Cliente findById(Long id) {
         return clienteRepository.findById(id).orElse(null);
     }
-
     @Override
     public Cliente guardarCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
-
     @Override
     public List<Cliente> findClienteTrueObraSocial(Boolean obraSocial) {
         return clienteRepository.findClienteTrueObraSocial(obraSocial);
     }
-
     @Override
     public List<Cliente> findClienteMismaObraSocial(String nombreObraSocial) {
         return clienteRepository.findClienteMismaObraSocial(nombreObraSocial);
+    }
+    @Override
+    public List<Cliente> findClienteByName(String nombre) {
+        return clienteRepository.findClienteByName(nombre);
     }
 }
