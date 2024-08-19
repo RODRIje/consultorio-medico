@@ -31,7 +31,7 @@ public class CitaController {
     private IMedicoService iMedicoService; // Servicio para manejar médicos
 
     @GetMapping("/find")
-    public List<Cita> findall() {
+    public List<Cita> findAll() {
         return iCitaService.findAllCita();
     }
 

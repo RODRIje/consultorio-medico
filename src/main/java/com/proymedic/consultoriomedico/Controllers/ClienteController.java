@@ -67,38 +67,38 @@ public class ClienteController {
     }
 
     @GetMapping("/findobrasocialtrue")
-    public List<Cliente> findObraSocialTrue(@Param("obraSocial") Boolean obraSocial){
+    public ResponseEntity<?> findObraSocialTrue(@Param("obraSocial") Boolean obraSocial){
         if (obraSocial == null){
-            return (List<Cliente>) ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(null);
         }
         List<Cliente> clienteList = iClienteService.findClienteTrueObraSocial(obraSocial);
         if (clienteList.isEmpty()){
-            return (List<Cliente>) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(clienteList).getBody();
+        return ResponseEntity.ok(clienteList);
     }
 
     @GetMapping("/findmismaobrasocial")
-    public List<Cliente> findMismaObraSocial(@Param("nombreObraSocial") String nombreObraSocial){
+    public ResponseEntity<?>  findMismaObraSocial(@Param("nombreObraSocial") String nombreObraSocial){
        if (nombreObraSocial == null || nombreObraSocial.isEmpty()){
-           return (List<Cliente>) ResponseEntity.badRequest().body(null);
+           return ResponseEntity.badRequest().body(null);
        }
        List<Cliente> clienteList = iClienteService.findClienteMismaObraSocial(nombreObraSocial);
        if (clienteList.isEmpty()){
-           return (List<Cliente>) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
        }
-       return ResponseEntity.ok(clienteList).getBody();
+       return ResponseEntity.ok(clienteList);
     }
 
     @GetMapping("/findbyname")
-    public List<Cliente> findByName(@Param("nombre") String nombre){
+    public ResponseEntity<?> findByName(@Param("nombre") String nombre){
         if (nombre == null || nombre.isEmpty()){
-            return (List<Cliente>) ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(null);
         }
         List<Cliente> clienteList = iClienteService.findClienteByName(nombre);
         if (clienteList.isEmpty()){
-            return (List<Cliente>) ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(clienteList).getBody();
+        return ResponseEntity.ok(clienteList);
     }
 }
