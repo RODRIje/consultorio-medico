@@ -98,7 +98,7 @@ public class CitaRepositoryTests {
         List<Cita> list = citaRepository.findAll();
         // then
         assertThat(list).isNotNull();
-        assertThat(list.size()).isEqualTo(4);
+        assertThat(list.size()).isEqualTo(5);
     }
     @DisplayName("Test para buscar cita por id")
     @Test

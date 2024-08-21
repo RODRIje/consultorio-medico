@@ -70,7 +70,7 @@ public class ClienteRepositoryTests {
         List<Cliente> clienteList = clienteRepository.findAll();
         // then
         assertThat(clienteList).isNotNull();
-        assertThat(clienteList.size()).isEqualTo(5);
+        assertThat(clienteList.size()).isEqualTo(8);
     }
 
     @DisplayName("Test para mostrar un cliente por id")

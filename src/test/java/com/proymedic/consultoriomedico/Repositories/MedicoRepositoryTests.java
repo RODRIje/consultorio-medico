@@ -67,7 +67,7 @@ public class MedicoRepositoryTests {
         List<Medico> medicoList = medicoRepository.findAll();
         // then
         assertThat(medicoList).isNotNull();
-        assertThat(medicoList.size()).isEqualTo(5);
+        assertThat(medicoList.size()).isEqualTo(6);
     }
     @DisplayName("Test para traer un medico por id")
     @Test
