@@ -75,7 +75,7 @@ public class HorarioControlerTest {
         response.andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.diaSemana", is(horarioNew.getDiaSemana())))
-                .andExpect(jsonPath("$.medico.nombre", is(horarioNew.getMedico().getNombre())))
+                .andExpect(jsonPath("$.medico.nombre", is(medico.getNombre())))
                 .andExpect(jsonPath("$.medico.apellido", is(horarioNew.getMedico().getApellido())))
                 .andExpect(jsonPath("$.medico.especialidad", is(horarioNew.getMedico().getEspecialidad())))
                 .andExpect(jsonPath("$.horaInicio", is("06:30:00")))

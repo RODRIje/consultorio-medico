@@ -1,6 +1,5 @@
 package com.proymedic.consultoriomedico.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +27,5 @@ public class HorarioDisponible {
 
     @ManyToOne
     @JoinColumn(name = "medico_id")
-    @JsonIgnore  // Evitarála serialización recursiva
     private Medico medico;
 }
