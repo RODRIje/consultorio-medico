@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -138,5 +140,107 @@ public class ClienteControlerTests {
         response.andExpect(status().isNoContent())
                 .andDo(print());
     }
+
+    @Test
+    void testFindByName()throws Exception{
+        // given
+        Cliente cliente = Cliente.builder()
+                .nombre("Rodrigo")
+                .apellido("Gonzalez")
+                .email("rodrig@gmail.com")
+                .obraSocial(false)
+                .nombreObraSocial(null)
+                .build();
+
+        List<Cliente> clienteList = Collections.singletonList(cliente);
+        given(iClienteService.findClienteByName(cliente.getNombre()))
+                .willReturn(clienteList);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/cliente/findbyname")
+                .param("nombre", cliente.getNombre())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre",is(cliente.getNombre())))
+                .andExpect(jsonPath("$[0].apellido",is(cliente.getApellido())))
+                .andExpect(jsonPath("$[0].email",is(cliente.getEmail())))
+                .andExpect(jsonPath("$[0].obraSocial",is(cliente.getObraSocial())))
+                .andExpect(jsonPath("$[0].nombreObraSocial",is(cliente.getNombreObraSocial())));
+    }
+
+    @Test
+    void testFindObraSocialTrue()throws Exception{
+        // given
+        Cliente cliente = Cliente.builder()
+                .nombre("Rodrigo")
+                .apellido("Gonzalez")
+                .email("rodrig@gmail.com")
+                .obraSocial(true)
+                .nombreObraSocial("IOMA")
+                .build();
+        List<Cliente> clienteList = Collections.singletonList(cliente);
+        given(iClienteService.findClienteTrueObraSocial(cliente.getObraSocial()))
+                .willReturn(clienteList);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/cliente/findobrasocialtrue")
+                .param("obraSocial", String.valueOf(true))
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre",is(cliente.getNombre())))
+                .andExpect(jsonPath("$[0].apellido",is(cliente.getApellido())))
+                .andExpect(jsonPath("$[0].nombreObraSocial",is(cliente.getNombreObraSocial())));
+    }
+
+    @Test
+    void testFindMismaObraSocial()throws Exception{
+            // given
+            Cliente cliente1 = Cliente.builder()
+                    .nombre("Rodrigo")
+                    .apellido("Gonzalez")
+                    .email("rodrig@gmail.com")
+                    .obraSocial(true)
+                    .nombreObraSocial("IOMA")
+                    .build();
+
+            Cliente cliente2 = Cliente.builder()
+                    .nombre("Ana")
+                    .apellido("Lopez")
+                    .email("ana@gmail.com")
+                    .obraSocial(true)
+                    .nombreObraSocial("IOMA")
+                    .build();
+
+            Cliente cliente3 = Cliente.builder()
+                    .nombre("Carlos")
+                    .apellido("Perez")
+                    .email("carlos@gmail.com")
+                    .obraSocial(true)
+                    .nombreObraSocial("OSDE")
+                    .build();
+
+            List<Cliente> clienteList = Arrays.asList(cliente1, cliente2);
+            given(iClienteService.findClienteMismaObraSocial("IOMA"))
+                    .willReturn(clienteList);
+
+            // when
+            ResultActions response = mockMvc.perform(get("/api/cliente/findmismaobrasocial")
+                    .param("nombreObraSocial", "IOMA")
+                    .contentType(MediaType.APPLICATION_JSON));
+
+            // then
+            response.andDo(print())
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.length()", is(2)))
+                    .andExpect(jsonPath("$[0].nombre", is(cliente1.getNombre())))
+                    .andExpect(jsonPath("$[0].apellido", is(cliente1.getApellido())))
+                    .andExpect(jsonPath("$[0].nombreObraSocial", is(cliente1.getNombreObraSocial())))
+                    .andExpect(jsonPath("$[1].nombre", is(cliente2.getNombre())))
+                    .andExpect(jsonPath("$[1].apellido", is(cliente2.getApellido())))
+                    .andExpect(jsonPath("$[1].nombreObraSocial", is(cliente2.getNombreObraSocial())));
+        }
+
 
 }
