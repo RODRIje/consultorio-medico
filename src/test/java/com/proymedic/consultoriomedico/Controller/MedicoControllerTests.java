@@ -18,9 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -148,6 +146,70 @@ public class MedicoControllerTests {
         //then
         response.andExpect(status().isNoContent())
                 .andDo(print());
+    }
+
+    @Test
+    void testFindByEspecialidad()throws Exception{
+        // given
+        Medico medico = Medico.builder()
+                .id(1L)
+                .nombre("Rene")
+                .apellido("Favaloro")
+                .especialidad("Clinico")
+                .email("renefava@gmail.com")
+                .build();
+
+        List<Medico> medicoList = Collections.singletonList(medico);
+
+        given(iMedicoService.findMedicoByEspecialidad(medico.getEspecialidad()))
+                .willReturn(medicoList);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/medico/findespecialidad")
+                .param("especialidad", medico.getEspecialidad())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre", is(medico.getNombre())))
+                .andExpect(jsonPath("$[0].apellido", is(medico.getApellido())))
+                .andExpect(jsonPath("$[0].especialidad", is(medico.getEspecialidad())))
+                .andExpect(jsonPath("$[0].email", is(medico.getEmail())));
+    }
+
+    @Test
+    void testFindbyName()throws Exception{
+        // given
+        Medico medico = Medico.builder()
+                .nombre("Rodrigo")
+                .apellido("Gonzalez")
+                .especialidad("Cardiocirujano")
+                .email("rodrimedico@gmail.com")
+                .matricula("123ABC456")
+                .build();
+
+        Medico medico2 = Medico.builder()
+                .nombre("Martin")
+                .apellido("Faravelo")
+                .especialidad("Clinico")
+                .email("martinmedico@gmail.com")
+                .matricula("789DEF012")
+                .build();
+
+        List<Medico> medicoList = Arrays.asList(medico, medico2);
+        given(iMedicoService.findMedicoByname(medico2.getNombre()))
+                .willReturn(Collections.singletonList(medico2));
+        // when
+        ResultActions response = mockMvc.perform(get("/api/medico/findname")
+                .param("nombre", medico2.getNombre())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre", is(medico2.getNombre())))
+                .andExpect(jsonPath("$[0].apellido", is(medico2.getApellido())))
+                .andExpect(jsonPath("$[0].especialidad", is(medico2.getEspecialidad())))
+                .andExpect(jsonPath("$[0].email", is(medico2.getEmail())))
+                .andExpect(jsonPath("$[0].matricula",is(medico2.getMatricula())));
     }
 
 }
