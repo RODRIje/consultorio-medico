@@ -149,6 +149,19 @@ public class MedicoControllerTests {
     }
 
     @Test
+    void testEliminarMedicoFail() throws Exception{
+        //given
+        Long MedicoId = null;
+        willDoNothing().given(iMedicoService).deleteMedico(MedicoId);
+
+        //when
+        ResultActions response = mockMvc.perform(delete("/api/medico/delete/{id}",MedicoId));
+
+        //then
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+    @Test
     void testFindByEspecialidad()throws Exception{
         // given
         Medico medico = Medico.builder()
