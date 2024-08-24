@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class CitaServiceTests {
         medico.setApellido("Perez");
 
         cliente = new Cliente();
-        cliente.setNombre("Ramira");
+        cliente.setNombre("Ramiro");
         cliente.setApellido("Suarez");
 
         citaFija = Cita.builder()
@@ -133,5 +134,77 @@ public class CitaServiceTests {
         citaService.deleteCita(citaId);
         // then
         verify(citaRepository, times(1)).deleteById(citaId);
+    }
+
+    @DisplayName("Test para buscar citas por nombre del medico")
+    @Test
+    void testFindCitaByMedico(){
+        // given
+        medico = new Medico();
+        medico.setNombre("Cristian");
+        medico.setApellido("Medina");
+
+        cliente = new Cliente();
+        cliente.setNombre("Roberto");
+        cliente.setApellido("Carlos");
+
+       Cita cita = Cita.builder()
+                .id(2L)
+                .hora(LocalTime.of(18,30))
+                .fecha(LocalDate.of(2024,10,21))
+                .observaciones("El cliente esta dado de alta")
+                .medico(medico)
+                .cliente(cliente)
+                .build();
+
+        List<Cita> expectedCitas = Arrays.asList(cita);
+        given(citaRepository.findByMedico(medico.getNombre())).willReturn(expectedCitas);
+
+        // when
+        List<Cita> citaList = citaService.findByMedico(medico.getNombre());
+
+        // then
+        assertThat(citaList).isNotNull();
+        assertThat(citaList).hasSize(1);
+        assertThat(citaList.get(0).getMedico().getNombre()).isEqualTo(medico.getNombre());
+        assertThat(citaList.get(0).getMedico().getApellido()).isEqualTo(medico.getApellido());
+        assertThat(citaList.get(0).getCliente().getNombre()).isEqualTo(cliente.getNombre());
+        assertThat(citaList.get(0).getCliente().getApellido()).isEqualTo(cliente.getApellido());
+    }
+
+    @DisplayName("Test para buscar una cita por nombre del cliente")
+    @Test
+    void testFindCitaByCliente(){
+        // given
+        medico = new Medico();
+        medico.setNombre("Cristian");
+        medico.setApellido("Medina");
+
+        cliente = new Cliente();
+        cliente.setNombre("Rodrigo");
+        cliente.setApellido("Gonzalez");
+
+        Cita cita = Cita.builder()
+                .id(2L)
+                .hora(LocalTime.of(18,30))
+                .fecha(LocalDate.of(2024,10,21))
+                .observaciones("El cliente esta dado de alta")
+                .medico(medico)
+                .cliente(cliente)
+                .build();
+
+        List<Cita> expectedCitas = Arrays.asList(cita);
+        given(citaRepository.findByCliente(cliente.getNombre())).willReturn(expectedCitas);
+
+        // when
+        List<Cita> citaList = citaService.findByCliente(cliente.getNombre());
+
+        // then
+        assertThat(citaList).isNotNull();
+        assertThat(citaList).hasSize(1);
+        assertThat(citaList.get(0).getCliente().getNombre()).isEqualTo(cliente.getNombre());
+        assertThat(citaList.get(0).getCliente().getApellido()).isEqualTo(cliente.getApellido());
+        assertThat(citaList.get(0).getMedico().getNombre()).isEqualTo(medico.getNombre());
+        assertThat(citaList.get(0).getMedico().getApellido()).isEqualTo(medico.getApellido());
     }
 }
