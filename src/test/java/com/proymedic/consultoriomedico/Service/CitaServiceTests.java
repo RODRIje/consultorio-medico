@@ -4,6 +4,8 @@ import com.proymedic.consultoriomedico.Entities.Cita;
 import com.proymedic.consultoriomedico.Entities.Cliente;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Repositories.CitaRepository;
+import com.proymedic.consultoriomedico.Repositories.ClienteRepository;
+import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.impl.ICitaService;
 import com.proymedic.consultoriomedico.Service.impl.IClienteService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -32,6 +35,10 @@ import static org.mockito.Mockito.verify;
 public class CitaServiceTests {
     @Mock
     private CitaRepository citaRepository;
+    @Mock
+    private MedicoRepository medicoRepository;
+    @Mock
+    private ClienteRepository clienteRepository;
 
     @InjectMocks
     private ICitaService citaService;
@@ -69,6 +76,52 @@ public class CitaServiceTests {
         Cita citaSave = citaService.guardarCita(citaFija);
         // then
         assertThat(citaSave).isNotNull();
+    }
+    @DisplayName("Test para actualizar un cita por id")
+    @Test
+    void testUpdateCitaById(){
+        // given
+        Long citaId = 1L;
+
+        Medico medico1 = new Medico();
+        medico1.setNombre("Cristian");
+        medico1.setApellido("Medina");
+
+        Cliente cliente1 = new Cliente();
+        cliente1.setNombre("Rodrigo");
+        cliente1.setApellido("Gonzalez");
+
+        Cita citaExistente = Cita.builder()
+                .hora(LocalTime.of(18,30))
+                .fecha(LocalDate.of(2024,10,21))
+                .observaciones("El cliente esta dado de alta")
+                .medico(medico1)
+                .cliente(cliente1)
+                .build();
+
+        Cita citaActualizada = Cita.builder()
+                .hora(LocalTime.of(15,45))
+                .fecha(LocalDate.of(2024,10,27))
+                .observaciones("El cliente esta dado de alta. Debe tomar ibuprofeno 600g por 30 dias cada 8 horas")
+                .medico(medico1)
+                .cliente(cliente1)
+                .build();
+
+        given(citaRepository.findById(citaId)).willReturn(Optional.of(citaExistente));
+        given(medicoRepository.findById(medico1.getId())).willReturn(Optional.of(medico1));
+        given(clienteRepository.findById(cliente1.getId())).willReturn(Optional.of(cliente1));
+        given(citaRepository.save(any(Cita.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        citaService.updateCita(citaId, citaActualizada);
+
+        // then
+        assertThat(citaActualizada.getHora()).isEqualTo("15:45");
+        assertThat(citaActualizada.getFecha()).isEqualTo("2024-10-27");
+        assertThat(citaActualizada.getObservaciones()).isEqualTo("El cliente esta dado de alta. Debe tomar ibuprofeno 600g por 30 dias cada 8 horas");
+        assertThat(citaActualizada.getMedico()).isEqualTo(citaActualizada.getMedico());
+        assertThat(citaActualizada.getCliente()).isEqualTo(citaActualizada.getCliente());
+        verify(citaRepository).save(citaActualizada);
     }
 
     @DisplayName("Test para buscar todas las citas")
