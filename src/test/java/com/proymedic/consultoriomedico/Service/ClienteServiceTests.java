@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -134,6 +135,111 @@ public class ClienteServiceTests {
         clienteService.deleteCliente(clienteId);
         // then
         verify(clienteRepository, times(1)).deleteById(clienteId);
+    }
+
+    @DisplayName("Test para buscar clientes con obra social")
+    @Test
+    void testFindClienteObraSocialTrue(){
+        // given
+        Cliente cliente = Cliente.builder()
+                .id(1L)
+                .nombre("Ramon")
+                .apellido("Abila")
+                .obraSocial(true)
+                .nombreObraSocial("OSDE")
+                .email("wancho@gmail.com")
+                .build();
+
+        List<Cliente> listObraTrue = Arrays.asList(cliente);
+        given(clienteRepository.findClienteTrueObraSocial(true)).willReturn(listObraTrue);
+
+        // when
+        List<Cliente> listCliente = clienteService.findClienteTrueObraSocial(true);
+
+        // then
+        assertThat(listCliente).isNotNull();
+        assertThat(listCliente).hasSize(1);
+        assertThat(listCliente.get(0).getNombre()).isEqualTo("Ramon");
+        assertThat(listCliente.get(0).getApellido()).isEqualTo("Abila");
+        assertThat(listCliente.get(0).getObraSocial()).isTrue();
+        assertThat(listCliente.get(0).getNombreObraSocial()).isEqualTo("OSDE");
+    }
+
+    @DisplayName("Test para traer clientes con la misma obra social")
+    @Test
+    void testFindClienteMismaObraSocial(){
+        // given
+        Cliente cliente1 = Cliente.builder()
+                .id(1L)
+                .nombre("Ramon")
+                .apellido("Abila")
+                .obraSocial(true)
+                .nombreObraSocial("OSDE")
+                .email("wancho@gmail.com")
+                .build();
+
+        Cliente cliente2 = Cliente.builder()
+                .id(1L)
+                .nombre("Roman")
+                .apellido("Riquelme")
+                .obraSocial(true)
+                .nombreObraSocial("OSDE")
+                .email("romi@gmail.com")
+                .build();
+
+        List<Cliente> clienteMisma = Arrays.asList(cliente1, cliente2);
+        given(clienteRepository.findClienteMismaObraSocial("OSDE")).willReturn(clienteMisma);
+
+        // when
+        List<Cliente> listCliente = clienteService.findClienteMismaObraSocial("OSDE");
+        // then
+        assertThat(listCliente).isNotNull();
+        assertThat(listCliente).hasSize(2);
+        assertThat(listCliente.get(0).getNombre()).isEqualTo("Ramon");
+        assertThat(listCliente.get(0).getApellido()).isEqualTo("Abila");
+        assertThat(listCliente.get(0).getObraSocial()).isTrue();
+        assertThat(listCliente.get(0).getNombreObraSocial()).isEqualTo("OSDE");
+        assertThat(listCliente.get(1).getNombre()).isEqualTo("Roman");
+        assertThat(listCliente.get(1).getApellido()).isEqualTo("Riquelme");
+        assertThat(listCliente.get(1).getObraSocial()).isTrue();
+        assertThat(listCliente.get(1).getNombreObraSocial()).isEqualTo("OSDE");
+
+    }
+
+    @DisplayName("Test para buscar clientes por nombre")
+    @Test
+    void testFindClienteByName(){
+        // given
+        Cliente cliente1 = Cliente.builder()
+                .id(1L)
+                .nombre("Roman")
+                .apellido("Varela")
+                .obraSocial(true)
+                .nombreObraSocial("OSDE")
+                .email("vare@gmail.com")
+                .build();
+
+        Cliente cliente2 = Cliente.builder()
+                .id(2L)
+                .nombre("Roman")
+                .apellido("Riquelme")
+                .obraSocial(true)
+                .nombreObraSocial("OSDE")
+                .email("romi@gmail.com")
+                .build();
+
+        List<Cliente> clienteListMismoNombre = Arrays.asList(cliente1, cliente2);
+        given(clienteRepository.findClienteByName("Roman")).willReturn(clienteListMismoNombre);
+
+        // when
+        List<Cliente> listCliente = clienteService.findClienteByName("Roman");
+        // then
+        assertThat(listCliente).isNotNull();
+        assertThat(listCliente).hasSize(2);
+        assertThat(listCliente.get(0).getNombre()).isEqualTo("Roman");
+        assertThat(listCliente.get(0).getApellido()).isEqualTo("Varela");
+        assertThat(listCliente.get(1).getNombre()).isEqualTo("Roman");
+        assertThat(listCliente.get(1).getApellido()).isEqualTo("Riquelme");
     }
 
 }
