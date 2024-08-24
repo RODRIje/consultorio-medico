@@ -13,10 +13,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -127,6 +130,46 @@ public class MedicoServiceTests {
         assertThat(medicoUpdate.getNombre()).isEqualTo("Mike");
         assertThat(medicoUpdate.getApellido()).isEqualTo("Torres");
     }
+    @DisplayName("Test para actualizar un medico por id")
+    @Test
+    void testUpdateMedicoById(){
+        // given
+        Long medicoId = 1L;
+
+        Medico medicoExistente = Medico.builder()
+                .id(medicoId)
+                .nombre("John")
+                .apellido("Doe")
+                .matricula("123XYZ")
+                .email("john.doe@example.com")
+                .especialidad("Cardiología")
+                .build();
+
+        Medico medicoActualizado = Medico.builder()
+                .id(medicoId)
+                .nombre("Mike")
+                .apellido("Torres")
+                .matricula("789ABC")
+                .email("mike.torres@example.com")
+                .especialidad("Neurología")
+                .build();
+
+        given(medicoRepository.findById(medicoId)).willReturn(Optional.of(medicoExistente));
+        given(medicoRepository.save(any(Medico.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        iMedicoService.updateMedico(medicoId, medicoActualizado);
+
+        // then
+        assertThat(medicoExistente.getNombre()).isEqualTo("Mike");
+        assertThat(medicoExistente.getApellido()).isEqualTo("Torres");
+        assertThat(medicoExistente.getMatricula()).isEqualTo("789ABC");
+        assertThat(medicoExistente.getEmail()).isEqualTo("mike.torres@example.com");
+        assertThat(medicoExistente.getEspecialidad()).isEqualTo("Neurología");
+        assertThat(medicoExistente.getHorariosDisponibles()).isEmpty();
+
+        verify(medicoRepository).save(medicoExistente);
+    }
 
     @DisplayName("Test para eliminar un medico por id")
     @Test
@@ -138,5 +181,59 @@ public class MedicoServiceTests {
         iMedicoService.deleteMedico(medicoId);
         // then
         verify(medicoRepository, times(1)).deleteById(medicoId);
+    }
+
+    @DisplayName("Test para buscar medicos por su nombre")
+    @Test
+    void testFindMedicoByName(){
+        // given
+        Medico medico = Medico.builder()
+                .id(1L)
+                .nombre("Rene")
+                .apellido("Favaloro")
+                .especialidad("Cardiocirujano")
+                .matricula("123ABC456")
+                .build();
+
+        List<Medico> listMedicoMismoNombre = Arrays.asList(medico);
+        given(medicoRepository.findMedicoByname("Rene")).willReturn(listMedicoMismoNombre);
+
+        // when
+        List<Medico> listMedico = iMedicoService.findMedicoByname("Rene");
+
+        // then
+        assertThat(listMedico).isNotNull();
+        assertThat(listMedico).hasSize(1);
+        assertThat(listMedico.get(0).getNombre()).isEqualTo("Rene");
+        assertThat(listMedico.get(0).getApellido()).isEqualTo("Favaloro");
+        assertThat(listMedico.get(0).getEspecialidad()).isEqualTo("Cardiocirujano");
+        assertThat(listMedico.get(0).getMatricula()).isEqualTo("123ABC456");
+    }
+
+    @DisplayName("Test para buscar medicos por su especialidad")
+    @Test
+    void testFindMedicoByEspecialidad(){
+        // given
+        Medico medico = Medico.builder()
+                .id(1L)
+                .nombre("Marcelo")
+                .apellido("Duran")
+                .especialidad("Pediatra")
+                .matricula("123ABC456")
+                .build();
+
+        List<Medico> listMedicoMismaEspecialidad = Arrays.asList(medico);
+        given(medicoRepository.findMedicoByEspecialidad("Pediatra")).willReturn(listMedicoMismaEspecialidad);
+
+        // when
+        List<Medico> listMedico = iMedicoService.findMedicoByEspecialidad("Pediatra");
+
+        // then
+        assertThat(listMedico).isNotNull();
+        assertThat(listMedico).hasSize(1);
+        assertThat(listMedico.get(0).getNombre()).isEqualTo("Marcelo");
+        assertThat(listMedico.get(0).getApellido()).isEqualTo("Duran");
+        assertThat(listMedico.get(0).getEspecialidad()).isEqualTo("Pediatra");
+        assertThat(listMedico.get(0).getMatricula()).isEqualTo("123ABC456");
     }
 }
