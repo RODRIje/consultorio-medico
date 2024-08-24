@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -194,5 +195,86 @@ public class CitaControllerTests {
         // then
         response.andDo(print())
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testFindCitaByMedico()throws Exception{
+        // given
+        Cliente cliente = Cliente.builder()
+                .nombre("Rodrigo")
+                .apellido("Gonzalez")
+                .obraSocial(true)
+                .nombreObraSocial("IOMA")
+                .build();
+
+        Medico medico = Medico.builder()
+                .especialidad("Cardiocirujano")
+                .nombre("Rene")
+                .apellido("Favaloro")
+                .build();
+
+        Cita cita = Cita.builder()
+                .fecha(LocalDate.of(2024,10,21))
+                .hora(LocalTime.of(14,30))
+                .observaciones("El cliente debe volver el 27 de octubre")
+                .medico(medico)
+                .cliente(cliente)
+                .build();
+        List<Cita> citaList = Arrays.asList(cita);
+        given(iCitaService.findByMedico(cita.getMedico().getNombre()))
+                .willReturn(citaList);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/cita/findbymedico")
+                .param("medico", cita.getMedico().getNombre())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].fecha", is("2024-10-21")))
+                .andExpect(jsonPath("$[0].hora", is("14:30:00")))
+                .andExpect(jsonPath("$[0].observaciones", is(cita.getObservaciones())))
+                .andExpect(jsonPath("$[0].medico.nombre", is(cita.getMedico().getNombre())))
+                .andExpect(jsonPath("$[0].cliente.nombre", is(cita.getCliente().getNombre())));
+    }
+
+    @Test
+    void testFindCitaByCliente()throws Exception{
+        // given
+        Cliente cliente = Cliente.builder()
+                .nombre("Rodrigo")
+                .apellido("Gonzalez")
+                .obraSocial(true)
+                .nombreObraSocial("IOMA")
+                .build();
+
+        Medico medico = Medico.builder()
+                .especialidad("Cardiocirujano")
+                .nombre("Rene")
+                .apellido("Favaloro")
+                .build();
+
+        Cita cita = Cita.builder()
+                .fecha(LocalDate.of(2024,10,21))
+                .hora(LocalTime.of(14,30))
+                .observaciones("El cliente debe volver el 27 de octubre")
+                .medico(medico)
+                .cliente(cliente)
+                .build();
+        List<Cita> citaList = Arrays.asList(cita);
+        given(iCitaService.findByCliente(cita.getCliente().getNombre()))
+                .willReturn(citaList);
+        // when
+        ResultActions response = mockMvc.perform(get("/api/cita/findbycliente")
+                .param("cliente", cita.getCliente().getNombre())
+                .contentType(MediaType.APPLICATION_JSON));
+        // then
+        response.andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].fecha", is("2024-10-21")))
+                .andExpect(jsonPath("$[0].hora", is("14:30:00")))
+                .andExpect(jsonPath("$[0].observaciones", is(cita.getObservaciones())))
+                .andExpect(jsonPath("$[0].medico.nombre", is(cita.getMedico().getNombre())))
+                .andExpect(jsonPath("$[0].cliente.nombre", is(cita.getCliente().getNombre())));
+
     }
 }
