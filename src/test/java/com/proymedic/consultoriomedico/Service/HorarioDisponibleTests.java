@@ -4,6 +4,7 @@ import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Entities.Medico;
 import com.proymedic.consultoriomedico.Repositories.CitaRepository;
 import com.proymedic.consultoriomedico.Repositories.HorarioDisponibleRepository;
+import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.impl.IHorarioDisponibleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +18,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -27,6 +29,8 @@ import static org.mockito.Mockito.verify;
 public class HorarioDisponibleTests {
     @Mock
     private HorarioDisponibleRepository horarioDisponibleRepository;
+    @Mock
+    private MedicoRepository medicoRepository;
 
     @InjectMocks
     private IHorarioDisponibleService horarioDisponibleService;
@@ -58,6 +62,48 @@ public class HorarioDisponibleTests {
         HorarioDisponible horarioSave = horarioDisponibleService.guardarHorario(horarioDisponibleFijo);
         // then
         assertThat(horarioSave).isNotNull();
+    }
+
+    @DisplayName("Test para actualizar un horario por id")
+    @Test
+    void testUpdateHorarioById(){
+        // given
+        Medico medico1 = new Medico();
+        medico1.setId(5L);
+        medico1.setNombre("Cristian");
+        medico1.setApellido("Romero");
+
+        Long horarioId = 1L;
+
+        HorarioDisponible horarioExistente = HorarioDisponible.builder()
+                .id(horarioId)
+                .medico(medico1)
+                .diaSemana("Lunes")
+                .horaInicio(LocalTime.of(14,30))
+                .horaFin(LocalTime.of(18,30))
+                .build();
+
+
+        HorarioDisponible horarioActualizado = HorarioDisponible.builder()
+                .id(horarioId)
+                .medico(medico1)
+                .diaSemana("Miercoles")
+                .horaInicio(LocalTime.of(14,30))
+                .horaFin(LocalTime.of(22,00))
+                .build();
+
+        given(horarioDisponibleRepository.findById(horarioId)).willReturn(Optional.of(horarioExistente));
+        given(medicoRepository.findById(medico1.getId())).willReturn(Optional.of(medico1));
+        given(horarioDisponibleRepository.save(any(HorarioDisponible.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        // when
+        horarioDisponibleService.updateHorario(horarioId, horarioActualizado);
+
+        // then
+        assertThat(horarioExistente.getDiaSemana()).isEqualTo("Miercoles");
+        assertThat(horarioExistente.getHoraInicio()).isEqualTo("14:30");
+        assertThat(horarioExistente.getHoraFin()).isEqualTo("22:00");
+        verify(horarioDisponibleRepository).save(horarioExistente);
     }
 
     @DisplayName("Test para traer todos los horarios")
