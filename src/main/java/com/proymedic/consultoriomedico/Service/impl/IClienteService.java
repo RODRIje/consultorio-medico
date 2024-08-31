@@ -1,8 +1,6 @@
 package com.proymedic.consultoriomedico.Service.impl;
 
 import com.proymedic.consultoriomedico.Entities.Cliente;
-import com.proymedic.consultoriomedico.Entities.Medico;
-import com.proymedic.consultoriomedico.Persistence.impl.IClienteDAO;
 import com.proymedic.consultoriomedico.Repositories.ClienteRepository;
 import com.proymedic.consultoriomedico.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;

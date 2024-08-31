@@ -3,8 +3,6 @@ package com.proymedic.consultoriomedico.Service.impl;
 import com.proymedic.consultoriomedico.Controllers.dto.HorarioDisponibleDTO;
 import com.proymedic.consultoriomedico.Entities.HorarioDisponible;
 import com.proymedic.consultoriomedico.Entities.Medico;
-import com.proymedic.consultoriomedico.Persistence.impl.IHorarioDisponibleDAO;
-import com.proymedic.consultoriomedico.Persistence.impl.IMedicoDAO;
 import com.proymedic.consultoriomedico.Repositories.HorarioDisponibleRepository;
 import com.proymedic.consultoriomedico.Repositories.MedicoRepository;
 import com.proymedic.consultoriomedico.Service.HorarioDisponibleService;
